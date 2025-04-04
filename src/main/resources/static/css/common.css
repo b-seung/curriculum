@@ -1,0 +1,77 @@
+/* 変数 */
+:root {
+  --text-xs: 0.75rem; /* 12px */
+  --text-sm: 0.875rem; /* 14px */
+  --text-base: 1rem; /* 16px */
+  --text-lg: 1.125rem; /* 18px */
+  --text-xl: 1.25rem; /* 20px */
+
+  --text-xs--line-height: calc(1 / 0.75);
+  --text-sm--line-height: calc(1.25 / 0.875);
+  --text-base--line-height: calc(1.5 / 1);
+  --text-lg--line-height: calc(1.75 / 1.125);
+  --text-xl--line-height: calc(1.75 / 1.25);
+
+  --container-xs: 10rem;
+  --container-md: 20rem;
+  --container-xl: 30rem;
+}
+
+body {
+  margin: 0;
+}
+
+label {
+  display: block;
+}
+
+/* text size */
+.text-xs {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--line-height);
+}
+.text-sm {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+.text-base {
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
+}
+.text-lg {
+  font-size: var(--text-lg);
+  line-height: var(--text-lg--line-height);
+}
+.text-xl {
+  font-size: var(--text-xl);
+  line-height: var(--text-xl--line-height);
+}
+
+/* width */
+.w-short {
+  width: var(--container-xs);
+}
+.w-medium {
+  width: var(--container-md);
+}
+.w-long {
+  width: var(--container-xl);
+}
+
+/* form */
+.form-input {
+  padding: 7px 5px;
+  border: 0.8px solid lightgray;
+  border-radius: 5px;
+}
+
+/* margin */
+.mb-1 {
+  margin-bottom: 10px;
+}
+.mb-2 {
+  margin-bottom: 20px;
+}
+.mb-3 {
+  margin-bottom: 30px;
+}
