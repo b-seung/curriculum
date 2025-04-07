@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="jp" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+  <head>
+    <meta charset="UTF-8" />
+    <title>課題</title>
+    <link rel="stylesheet" href="css/common.css" />
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript" src="lib/jquery-3.7.1.min.js"></script>
+  </head>
+  <body>
+    <div th:replace="fragments/header :: header"></div>
+    <div layout:fragment="content"></div>
+    <div th:replace="fragments/footer :: footer"></div>
+  </body>
+</html>

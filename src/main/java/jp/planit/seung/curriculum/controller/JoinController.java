@@ -5,11 +5,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/member")
-public class MemberRegistController extends BaseController {
-  @RequestMapping("/regist")
+@RequestMapping("/join")
+public class JoinController extends BaseController {
+  @GetMapping("")
   public String index() {
-    return "memberRegist.html";
+    return "join_sample.html";
+    // return "join.html";
   }
 
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jp.planit.seung.curriculum.mapper.MemberMapper">
+  <select id="findMember" 
+    parameterType="map" 
+    resultType="jp.planit.seung.curriculum.entity.Member">
+    
+    SELECT
+      *
+    FROM
+      t_member
+    WHERE
+      id = #{id}
+    LIMIT 1;
+  </select>
+</mapper>

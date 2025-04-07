@@ -1,54 +1,46 @@
 package jp.planit.seung.curriculum.config;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-import jp.planit.seung.curriculum.service.LoginService;
-import lombok.AllArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor
 public class SecurityConfig {
-  // private LoginService loginService;
-
   // @Bean
   // public PasswordEncoder passwordEncoder() {
   // return new BCryptPasswordEncoder();
   // }
 
-  // @Override
-  // public void configure(WebSecurity web) throws Exception {
-  // web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**");
-  // }
+  @Bean
+  public WebSecurityCustomizer webSecurityCustomizer() {
+    return (web) -> web.ignoring()
+        .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+  }
 
-  // @Bean
-  // public SecurityFilterChain securityFilterChain(HttpSecurity http) throws
-  // Exception {
-  // return http.formLogin()
-  // .loginPage("/login")
-  // .defaultSuccessUrl("/user/login/result")
-  // .permitAll()
-  // .and() // 로그아웃 설정
-  // .logout()
-  // .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
-  // .logoutSuccessUrl("/user/logout/result")
-  // .invalidateHttpSession(true)
-  // .and()
-  // // 403 예외처리 핸들링
-  // .exceptionHandling().accessDeniedPage("/user/denied").build();
-  // }
-
-  // @Override
-  // public void configure(AuthenticationManagerBuilder auth) throws Exception {
-  // auth.userDetailsService(loginService).passwordEncoder(passwordEncoder());
-  // }
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http.authorizeHttpRequests((auth) -> auth
+        .requestMatchers("/css/**", "/js/**", "/img/**", "/lib/**", "/join", "/login").permitAll()
+        .anyRequest().authenticated())
+        .formLogin((formLogin) -> formLogin
+            .loginPage("/login")
+            .loginProcessingUrl("/loging")
+            .failureUrl("/login/error")
+            .defaultSuccessUrl("/index")
+            .permitAll())
+        // .logout((logoutConfig) -> logoutConfig
+        // .logoutSuccessUrl("/login")
+        // .invalidateHttpSession(true))
+        .httpBasic(AbstractHttpConfigurer::disable)
+        .csrf(AbstractHttpConfigurer::disable);
+    return http.build();
+  }
 }
