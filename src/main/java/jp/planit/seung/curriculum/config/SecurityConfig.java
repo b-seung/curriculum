@@ -1,5 +1,6 @@
 package jp.planit.seung.curriculum.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,9 +12,23 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import jp.planit.seung.curriculum.handler.LoginFailHandler;
+import jp.planit.seung.curriculum.handler.LoginSuccessHandler;
+import jp.planit.seung.curriculum.provider.LoginProvider;
+import lombok.RequiredArgsConstructor;
+
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+  @Autowired
+  private LoginProvider loginProvider;
+  @Autowired
+  private LoginSuccessHandler successHandler;
+  @Autowired
+  private LoginFailHandler failHandler;
+
   // @Bean
   // public PasswordEncoder passwordEncoder() {
   // return new BCryptPasswordEncoder();
@@ -28,19 +43,22 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.authorizeHttpRequests((auth) -> auth
-        .requestMatchers("/css/**", "/js/**", "/img/**", "/lib/**", "/join", "/login").permitAll()
+        .requestMatchers("/css/**", "/js/**", "/img/**", "/lib/**", "/join/**", "/login", "/password/**").permitAll()
         .anyRequest().authenticated())
         .formLogin((formLogin) -> formLogin
             .loginPage("/login")
             .loginProcessingUrl("/loging")
-            .failureUrl("/login/error")
-            .defaultSuccessUrl("/index")
+            .usernameParameter("username")
+            .passwordParameter("password")
+            .successHandler(successHandler)
+            .failureHandler(failHandler)
             .permitAll())
-        // .logout((logoutConfig) -> logoutConfig
-        // .logoutSuccessUrl("/login")
-        // .invalidateHttpSession(true))
+        .logout((logoutConfig) -> logoutConfig
+            .logoutSuccessUrl("/login")
+            .invalidateHttpSession(true))
         .httpBasic(AbstractHttpConfigurer::disable)
-        .csrf(AbstractHttpConfigurer::disable);
+        .csrf(AbstractHttpConfigurer::disable)
+        .authenticationProvider(loginProvider);
     return http.build();
   }
 }

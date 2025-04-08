@@ -30,6 +30,8 @@ public class MemberService implements UserDetailsService {
     if (member != null) {
       List<GrantedAuthority> authorities = new ArrayList();
       return new User(member.getId(), member.getPassword(), authorities);
+    } else {
+
     }
     return null;
   }

@@ -20,7 +20,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "t_member")
 @Entity
 @Getter
-@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseEntity {
   @Id
@@ -32,22 +31,10 @@ public class Member extends BaseEntity {
   @Column
   private String member_id;
 
-  @Column
-  private String delete_flg;
-
-  @CreatedDate
-  @Column
-  private LocalDateTime create_date;
-
-  @LastModifiedDate
-  @Column
-  private LocalDateTime update_date;
-
   @Builder
   public Member(String id, String pw, String memberId) {
     this.id = id;
     this.password = pw;
     this.member_id = memberId;
-    this.delete_flg = Flag.OFF.getValue();
   }
 }
