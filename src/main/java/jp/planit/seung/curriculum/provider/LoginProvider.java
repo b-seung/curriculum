@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
-import jp.planit.seung.curriculum.entity.Member;
+import jp.planit.seung.curriculum.entity.MemberEntity;
 import jp.planit.seung.curriculum.mapper.MemberMapper;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,7 +36,7 @@ public class LoginProvider implements AuthenticationProvider {
     String resultUserPw = "";
     Object resultObj = null;
 
-    Member userInfo = memberMapper.findMember(Map.of("id", userId));
+    MemberEntity userInfo = memberMapper.findMember(Map.of("id", userId));
 
     if (userInfo == null) {
       throw new UsernameNotFoundException("");
@@ -49,7 +49,6 @@ public class LoginProvider implements AuthenticationProvider {
       throw new BadCredentialsException("");
     }
 
-    // 권한 리스트
     List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
     roles.add(new SimpleGrantedAuthority("MEMBER"));
 

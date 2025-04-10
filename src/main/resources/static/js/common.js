@@ -22,9 +22,7 @@ const setErrorMsg = (id, msg) => {
  * エラーメッセージを初期化する
  */
 const errorClear = () => {
-  console.log('?');
   $('p[id^="error-"]').each((index, item) => {
-    console.log($(item));
     if (!$(item).hasClass('hidden')) {
       $(item).addClass('hidden');
     }
@@ -36,19 +34,59 @@ const errorClear = () => {
   });
 };
 
-const postData = (url, form, callback = null) => {
+const getForm = (form) => {
   let params = new Object();
   $(form)
     .find('input')
     .each((index, item) => {
+      if ($(item).attr('name') == undefined) return;
+      if (equalsOr($(item).attr('type'), ['radio'])) return;
+
       params[$(item).attr('name')] = $(item).val();
     });
 
+  $(form)
+    .find('input[type=radio]')
+    .each((index, item) => {
+      if (params[$(item).attr('name')] != undefined) return;
+
+      params[$(item).attr('name')] = $(`input[name=${$(item).attr('name')}]:checked`).val();
+    });
+
+  return params;
+};
+
+const equalsOr = (txt, arr) => {
+  return arr.includes(txt);
+};
+
+const postData = (url, form, callback = null) => {
+  let params = getForm($(form));
+
   $.ajax({
-    url: '/loging',
+    url: url,
     type: 'POST',
-    dataType: 'json',
-    data: params,
+    contentType: 'application/json',
+    data: JSON.stringify(params),
+    success: function (res) {
+      if (callback != null) {
+        callback(res);
+      }
+    },
+    error: function (request, status, error) {
+      console.log(error);
+    },
+  });
+};
+
+const getData = (url, form, callback = null) => {
+  let params = getForm($(form));
+
+  $.ajax({
+    url: url,
+    type: 'GET',
+    contentType: 'application/json',
+    data: JSON.stringify(params),
     success: function (res) {
       if (callback != null) {
         callback(res);

@@ -18,8 +18,8 @@
         <div class="t-r">
           <a href="/password/reset" class="text-xs">パスワードをお忘れの方はこちら</a>
         </div>
-        <div style="margin-top: 50px">
-          <button type="submit" class="mb-2">ログイン</button>
+        <div class="mt-5">
+          <button type="submit" class="mb-2 blue">ログイン</button>
           <button type="button" id="joinBtn">会員登録</button>
         </div>
       </div>
@@ -65,12 +65,23 @@
           return false;
         }
 
-        postData('loging', $('form'), (res) => {
-          if (res.status == '200') {
-            location.href = '/home';
-          } else {
-            alert(decodeURI(res.message));
-          }
+        let params = getForm($('form'));
+
+        $.ajax({
+          url: '/loging',
+          type: 'POST',
+          dataType: 'json',
+          data: params,
+          success: function (res) {
+            if (res.status == '200') {
+              location.href = '/home';
+            } else {
+              alert(decodeURI(res.message));
+            }
+          },
+          error: function (request, status, error) {
+            console.log(error);
+          },
         });
       });
     </script>

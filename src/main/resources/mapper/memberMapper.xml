@@ -5,7 +5,7 @@
 <mapper namespace="jp.planit.seung.curriculum.mapper.MemberMapper">
   <select id="findMember" 
     parameterType="map" 
-    resultType="jp.planit.seung.curriculum.entity.Member">
+    resultType="jp.planit.seung.curriculum.entity.MemberEntity">
     
     SELECT
       *
@@ -13,6 +13,23 @@
       t_member
     WHERE
       id = #{id}
+    LIMIT 1;
+  </select>
+  
+  <select id="login" 
+    parameterType="map" 
+    resultType="jp.planit.seung.curriculum.entity.User">
+    
+    SELECT
+      t1.id, t1.password, t2.name, t2.email
+    FROM
+      t_member t1
+    INNER JOIN
+      t_member_detail t2
+    ON
+      t2.member_id = t1.member_id
+    WHERE
+      t1.id = #{id}
     LIMIT 1;
   </select>
 </mapper>
