@@ -4,70 +4,39 @@
     <form>
       <div class="body">
         <div class="mb-3">
-          <label class="text-lg label-hd">会員登録</label>
+          <label class="text-lg label-hd">会員登録（仮）登録</label>
         </div>
-        <div class="mb-3 flex row">
-          <label for="id" class="text-base form-label required">id</label>
-          <input id="id" name="id" type="text" class="form-input w-medium-half" maxlength="20" />
-          <button type="button" class="gray check ml-1">確認する</button>
+        <div class="mb-3 flex label-center">
+          <label for="email" class="text-base form-label required">メールアドレス</label>
+          <input id="email" name="email" type="text" class="form-input w-medium" maxlength="256" />
         </div>
-        <div class="mb-2 flex label-center">
-          <label for="name" class="text-base form-label">氏名</label>
+        <div class="mb-4 flex label-center">
+          <label for="emailConfirm" class="text-base form-label">メールアドレス確認</label>
           <div class="flex column">
-            <input id="name" name="name" type="text" class="form-input w-medium" maxlength="20" />
-            <p class="comment">※姓と名の間に全角スペースを入れてください</p>
-          </div>
-        </div>
-        <div class="mb-3 flex row">
-          <label for="birthday" class="text-base form-label required">生年月日</label>
-          <input id="birthday" name="birthday" type="date" class="form-input w-medium-half" />
-
-          <label class="text-sm ml-3">年齢</label>
-          <input id="years" type="number" class="form-input w-short-half" style="margin: 0 5px" readonly />
-          <label class="text-sm">歳</label>
-        </div>
-        <div class="mb-3 flex row">
-          <label class="text-base form-label">性別</label>
-          <div class="flex row">
-            <input id="male" name="seibetsu" type="radio" value="0" />
-            <label for="male" class="text-sm">男性</label>
-          </div>
-          <div class="flex row ml-2">
-            <input id="female" name="seibetsu" type="radio" value="1" />
-            <label for="female" class="text-sm">女性</label>
+            <input id="emailConfirm" type="text" class="form-input w-medium" maxlength="256" />
+            <p id="error-emailConfirm" class="error-msg text-sm hidden"></p>
           </div>
         </div>
         <div class="mb-3 flex label-center">
-          <label for="postcode" class="text-base form-label">郵便番号</label>
-          <div class="flex column">
-            <input id="postcode" name="postcode" type="number" class="form-input w-short" maxlength="7" />
-            <p class="comment">※ハイフン(-)なしで入力してください。</p>
-          </div>
+          <label for="password" class="text-base form-label required">パスワード</label>
+          <input id="password" name="password" type="text" class="form-input w-medium" maxlength="64" />
         </div>
-        <div class="flex label-center">
-          <label for="phoneNo" class="text-base form-label">電話番号</label>
+        <div class="mb-5 flex label-center">
+          <label for="passwordConfirm" class="text-base form-label">パスワード確認</label>
           <div class="flex column">
-            <input id="phoneNo" name="phoneNo" type="number" class="form-input w-medium-half" maxlength="12" />
-            <p class="comment">※ハイフン(-)なしで入力してください。</p>
+            <input id="passwordConfirm" type="text" class="form-input w-medium" maxlength="64" />
+            <p id="error-passwordConfirm" class="error-msg text-sm hidden"></p>
           </div>
         </div>
         <div class="mt-5 flex row bt-box">
           <button id="back" type="button">戻る</button>
-          <button id="clear" type="button" class="green">クリア</button>
           <button id="next" type="button" class="blue">次へ</button>
         </div>
       </div>
     </form>
     <script>
       // 初期処理
-      $(document).ready(function () {
-        const today = new Date();
-        let year = today.getFullYear().toString().padStart(4, '0');
-        let month = (today.getMonth() + 1).toString().padStart(2, '0');
-        let day = today.getDate().toString().padStart(2, '0');
-        $('#birthday').val(`${year}-${month}-${day}`);
-        $('#years').val(0);
-      });
+      $(document).ready(function () {});
 
       // 戻るボタンクリックイベント
       $('#back').click(() => {
@@ -76,7 +45,9 @@
 
       // 次へボタンクリックイベント
       $('#next').click(() => {
-        postData('/join/next', $('form'), (res) => {
+        const params = getForm($('form'));
+
+        postData('/join/pre/ok', params, (res) => {
           location.href = res.url;
         });
       });
@@ -87,7 +58,7 @@
       }
 
       .form-label {
-        width: 130px;
+        width: 170px;
         margin-left: 30px;
       }
 
@@ -98,13 +69,10 @@
       .bt-box {
         justify-content: space-between;
       }
+
       .bt-box button {
         max-width: 300px;
         width: calc(100% / 3 - 10px);
-      }
-
-      .row {
-        align-items: center;
       }
     </style>
   </div>

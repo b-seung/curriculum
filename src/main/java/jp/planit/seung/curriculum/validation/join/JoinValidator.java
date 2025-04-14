@@ -1,9 +1,7 @@
-package jp.planit.seung.curriculum.validation;
+package jp.planit.seung.curriculum.validation.join;
 
 import java.time.LocalDate;
-import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;

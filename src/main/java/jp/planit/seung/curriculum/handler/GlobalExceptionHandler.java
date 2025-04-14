@@ -8,11 +8,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jp.planit.seung.curriculum.dto.base.BaseErrorResponse;
 import jp.planit.seung.curriculum.exception.CustomException;
+import lombok.RequiredArgsConstructor;
 
 @RestControllerAdvice
+@RequiredArgsConstructor
 public class GlobalExceptionHandler {
+
+    private final HttpSession session;
 
     @ExceptionHandler({ CustomException.class })
     protected ResponseEntity<?> handleCustomException(Exception ex) {
@@ -26,6 +31,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({ Exception.class })
     protected void handleServerException(Exception ex, HttpServletResponse response) throws IOException {
         String redirect_uri = "/error";
+
+        session.invalidate();
+
         response.sendRedirect(redirect_uri);
     }
 }

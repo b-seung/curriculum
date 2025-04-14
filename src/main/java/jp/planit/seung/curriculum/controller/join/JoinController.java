@@ -9,6 +9,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,7 @@ import jp.planit.seung.curriculum.dto.JoinRequest;
 import jp.planit.seung.curriculum.dto.base.BaseResponse;
 import jp.planit.seung.curriculum.exception.CustomException;
 import jp.planit.seung.curriculum.service.JoinService;
-import jp.planit.seung.curriculum.validation.JoinValidator;
+import jp.planit.seung.curriculum.validation.join.JoinValidator;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -41,16 +42,8 @@ public class JoinController {
     binder.addValidators(joinValidator);
   }
 
-  @GetMapping("/pre")
-  public ModelAndView joinPreIndex() {
-    ModelAndView mv = new ModelAndView();
-    mv.setViewName("join_pre");
-
-    return mv;
-  }
-
   @GetMapping("/{token}")
-  public ModelAndView joinIndex(String token) {
+  public ModelAndView joinIndex(@PathVariable("token") String token) {
     ModelAndView mv = new ModelAndView();
     mv.setViewName(UrlConst.JOIN);
 
@@ -89,6 +82,7 @@ public class JoinController {
     session.setAttribute(UrlConst.JOIN, request);
 
     BaseResponse res = new BaseResponse();
+    res.setHttpStatus(HttpStatus.OK.value());
     res.setUrl("/join/next");
 
     return ResponseEntity.ok(res);

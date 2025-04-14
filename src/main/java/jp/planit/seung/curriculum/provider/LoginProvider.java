@@ -11,11 +11,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
 import jp.planit.seung.curriculum.entity.MemberEntity;
+import jp.planit.seung.curriculum.entity.User;
 import jp.planit.seung.curriculum.mapper.MemberMapper;
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,19 +35,19 @@ public class LoginProvider implements AuthenticationProvider {
     String userId = authentication.getName();
     String userPw = (String) authentication.getCredentials();
 
-    String resultUserPw = "";
     Object resultObj = null;
+    String resultPw = "";
 
-    MemberEntity userInfo = memberMapper.findMember(Map.of("id", userId));
+    User userInfo = memberMapper.login(Map.of("id", userId));
 
     if (userInfo == null) {
       throw new UsernameNotFoundException("");
     } else {
-      resultUserPw = userInfo.getPassword();
+      resultPw = userInfo.getPassword();
       resultObj = userInfo;
     }
 
-    if (!userPw.equals(resultUserPw)) {
+    if (!resultPw.equals(userPw)) {
       throw new BadCredentialsException("");
     }
 

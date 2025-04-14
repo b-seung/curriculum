@@ -52,9 +52,11 @@ public class JoinNextController {
   @PostMapping("/ok")
   public ResponseEntity<?> joinNextOk(@RequestBody JoinRequest request) {
 
-    // joinService.
+    BaseResponse res = new BaseResponse();
+    res.setHttpStatus(HttpStatus.OK.value());
+    res.setUrl("/join/end");
 
-    return ResponseEntity.ok().body(new BaseResponse());
+    return ResponseEntity.ok().body(res);
   }
 
   @PostMapping("/back")

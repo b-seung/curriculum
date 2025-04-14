@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
+  <div layout:fragment="content">
+    <div class="mb-3">
+      <label class="text-lg label-hd">会員登録完了</label>
+    </div>
+    <div class="label-center mt-3">会員登録完了しました。ログイン画面に戻ります。</div>
+    <button type="button" id="next">ログイン画面へ</button>
+    <script>
+      // 次へボタンクリックイベント
+      $('#next').click(() => {
+        postData('/join/end/ok', {}, (res) => {
+          if (res.url != '' && res.url != null) {
+            location.href = res.url;
+          }
+        });
+      });
+    </script>
+    <style>
+      .label-center {
+        align-items: center;
+      }
+    </style>
+  </div>
+</html>

@@ -1,5 +1,6 @@
 package jp.planit.seung.curriculum.controller.join;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,9 +22,9 @@ public class JoinEndController {
   private final JoinService joinService;
 
   @RequestMapping("")
-  public ModelAndView index() {
+  public ModelAndView jojinEndIndex() {
     ModelAndView mv = new ModelAndView();
-    mv.setViewName(null);
+    mv.setViewName(UrlConst.JOIN_END);
 
     session.removeAttribute(UrlConst.JOIN);
     session.removeAttribute(UrlConst.JOIN_NEXT);
@@ -32,8 +33,12 @@ public class JoinEndController {
   }
 
   @PostMapping("/ok")
-  public ResponseEntity<?> ok() {
+  public ResponseEntity<?> joinEndOk() {
 
-    return ResponseEntity.ok(new BaseResponse());
+    BaseResponse res = new BaseResponse();
+    res.setHttpStatus(HttpStatus.OK.value());
+    res.setUrl("/login");
+
+    return ResponseEntity.ok(res);
   }
 }

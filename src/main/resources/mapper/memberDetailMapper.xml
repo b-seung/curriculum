@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jp.planit.seung.curriculum.mapper.MemberDetailMapper">
+  <select id="searchEmail" 
+    parameterType="map" 
+    resultType="jp.planit.seung.curriculum.entity.MemberDetailEntity">
+    
+    SELECT
+      *
+    FROM
+      t_member_detail
+    WHERE
+      email = #{email}
+    LIMIT 1;
+  </select>
+  
+</mapper>

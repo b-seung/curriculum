@@ -1,5 +1,6 @@
 package jp.planit.seung.curriculum.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -14,7 +15,7 @@ import lombok.Getter;
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @MappedSuperclass
-public class BaseEntity {
+public class BaseEntity implements Serializable {
   @Column
   private String delete_flg;
 

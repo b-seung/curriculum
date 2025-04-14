@@ -47,7 +47,7 @@
       });
 
       $('#joinBtn').click((e) => {
-        location.href = '/join';
+        location.href = '/join/pre';
       });
 
       $('form').submit((e) => {
@@ -74,7 +74,7 @@
           dataType: 'json',
           data: params,
           success: function (res) {
-            if (res.status == '200') {
+            if (res.httpStatus == 200) {
               location.href = '/home';
             } else {
               setError(decodeURI(res.message));
