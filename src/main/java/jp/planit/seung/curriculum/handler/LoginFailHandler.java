@@ -2,7 +2,10 @@ package jp.planit.seung.curriculum.handler;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
@@ -15,8 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jp.planit.seung.curriculum.constants.Status;
-import jp.planit.seung.curriculum.dto.ResponseDataDTO;
+import jp.planit.seung.curriculum.dto.base.BaseErrorResponse;
 
 @Component
 public class LoginFailHandler extends SimpleUrlAuthenticationFailureHandler {
@@ -26,9 +28,10 @@ public class LoginFailHandler extends SimpleUrlAuthenticationFailureHandler {
 
     ObjectMapper mapper = new ObjectMapper();
 
-    ResponseDataDTO responseDataDTO = new ResponseDataDTO();
+    BaseErrorResponse responseDataDTO = new BaseErrorResponse();
+    List<String> msg = new ArrayList<>();
 
-    String errorMessage;
+    String errorMessage = "";
     if (e instanceof BadCredentialsException || e instanceof InternalAuthenticationServiceException) {
       errorMessage = "IDまたはパスワードが正しくありません。";
     } else if (e instanceof UsernameNotFoundException) {
@@ -39,7 +42,7 @@ public class LoginFailHandler extends SimpleUrlAuthenticationFailureHandler {
 
     errorMessage = URLEncoder.encode(errorMessage, "UTF-8");
 
-    responseDataDTO.setStatus(Status.ERROR.getValue());
+    responseDataDTO.setError(HttpStatus.METHOD_NOT_ALLOWED);
     responseDataDTO.setMessage(errorMessage);
 
     httpServletResponse.setCharacterEncoding("UTF-8");

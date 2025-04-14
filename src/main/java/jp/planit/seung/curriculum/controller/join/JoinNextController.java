@@ -1,52 +1,40 @@
-package jp.planit.seung.curriculum.controller;
+package jp.planit.seung.curriculum.controller.join;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.qos.logback.core.model.Model;
 import jakarta.servlet.http.HttpSession;
-import jp.planit.seung.curriculum.dto.JoinRequestDto;
+import jp.planit.seung.curriculum.constants.UrlConst;
+import jp.planit.seung.curriculum.dto.JoinRequest;
+import jp.planit.seung.curriculum.dto.base.BaseResponse;
 import jp.planit.seung.curriculum.service.JoinService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
+@RequestMapping("/join/next")
 @RequiredArgsConstructor
-public class JoinController extends BaseController {
+public class JoinNextController {
 
   private final HttpSession session;
   private final JoinService joinService;
 
-  @GetMapping("/join")
-  public ModelAndView index() {
-    ModelAndView mv = new ModelAndView();
-    mv.setViewName("join_sample");
-
-    return mv;
-  }
-
-  @PostMapping("/join/next")
-  public ResponseEntity<?> next(@RequestBody JoinRequestDto request) {
-    session.setAttribute("join_check_sample", request);
-
-    Map<String, Object> res = new HashMap<>();
-    res.put("url", "/joinCheck");
-    return ResponseEntity.ok().body(res);
-  }
-
-  @GetMapping("/joinCheck")
-  public ModelAndView next2(Model model) {
-    JoinRequestDto joinRequestDto = (JoinRequestDto) session.getAttribute("join_check_sample");
-    session.removeAttribute("join_check_sample");
+  @GetMapping("")
+  public ModelAndView joinNextIndex(Model model) throws Exception {
+    JoinRequest joinRequestDto = (JoinRequest) session.getAttribute(UrlConst.JOIN);
+    session.setAttribute(UrlConst.JOIN_NEXT, joinRequestDto);
 
     ModelAndView mv = new ModelAndView();
-    mv.setViewName("join_check_sample");
+    mv.setViewName(UrlConst.JOIN_NEXT);
 
     Map<String, Object> params = new HashMap<>();
     params.put("id", joinRequestDto.getId());
@@ -61,4 +49,20 @@ public class JoinController extends BaseController {
     return mv;
   }
 
+  @PostMapping("/ok")
+  public ResponseEntity<?> joinNextOk(@RequestBody JoinRequest request) {
+
+    // joinService.
+
+    return ResponseEntity.ok().body(new BaseResponse());
+  }
+
+  @PostMapping("/back")
+  public ResponseEntity<?> joinNextBack() {
+    session.removeAttribute(UrlConst.JOIN_NEXT);
+
+    BaseResponse res = new BaseResponse();
+    res.setHttpStatus(HttpStatus.OK.value());
+    return ResponseEntity.ok(res);
+  }
 }

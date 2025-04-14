@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,8 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jp.planit.seung.curriculum.constants.SessionConst;
-import jp.planit.seung.curriculum.constants.Status;
-import jp.planit.seung.curriculum.dto.ResponseDataDTO;
+import jp.planit.seung.curriculum.dto.base.BaseResponse;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -31,9 +31,9 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     ObjectMapper mapper = new ObjectMapper();
 
-    ResponseDataDTO responseDataDTO = new ResponseDataDTO();
+    BaseResponse responseDataDTO = new BaseResponse();
 
-    responseDataDTO.setStatus(Status.OK.getValue());
+    responseDataDTO.setHttpStatus(HttpStatus.OK.value());
 
     response.setCharacterEncoding("UTF-8");
     response.setStatus(HttpServletResponse.SC_OK);

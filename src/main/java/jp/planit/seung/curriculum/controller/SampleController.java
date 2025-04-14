@@ -5,11 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
-public class SampleController extends BaseController {
-  @RequestMapping("/index")
-  public String index() {
-    return "index.html";
-  }
+public class SampleController {
 
   @RequestMapping("/home")
   public ModelAndView home() {

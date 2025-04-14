@@ -18,6 +18,29 @@ const setErrorMsg = (id, msg) => {
   $(error).text(msg);
 };
 
+const setError = (msg) => {
+  if ($('#error-msg').hasClass('hidden')) {
+    $('#error-msg').removeClass('hidden');
+  }
+
+  $('#error-msg').find('div').html(msg.replaceAll('\n', '<br />'));
+};
+
+const setSuccessMsg = (id, msg) => {
+  const item = '#' + id;
+  const error = '#' + $.escapeSelector('error-' + id);
+
+  if (!$(item).hasClass('input-success')) {
+    $($(item).addClass('input-success'));
+  }
+
+  if ($(error).hasClass('hidden')) {
+    $(error).removeClass('hidden');
+  }
+
+  $(error).text(msg);
+};
+
 /**
  * エラーメッセージを初期化する
  */
@@ -32,6 +55,25 @@ const errorClear = () => {
   $('.input-error').each((i, item) => {
     $(item).removeClass('input-error');
   });
+
+  $('.input-success').each((i, item) => {
+    $(item).removeClass('input-success');
+  });
+
+  if (!$('#error-msg').hasClass('hidden')) {
+    $('#error-msg').addClass('hidden');
+  }
+  $('#error-msg').find('div').text('');
+};
+
+const errorClearTarget = (id) => {
+  if (!$('#error-' + id).hasClass('hidden')) {
+    $('#error-' + id).addClass('hidden');
+  }
+
+  if ($('#' + id).hasClass('input-error')) {
+    $('#' + id).removeClass('input-error');
+  }
 };
 
 const getForm = (form) => {
@@ -60,40 +102,44 @@ const equalsOr = (txt, arr) => {
   return arr.includes(txt);
 };
 
-const postData = (url, form, callback = null) => {
-  let params = getForm($(form));
-
+const postData = (url, params, success = null, error = null) => {
   $.ajax({
     url: url,
     type: 'POST',
     contentType: 'application/json',
     data: JSON.stringify(params),
     success: function (res) {
-      if (callback != null) {
-        callback(res);
+      if (success != null) {
+        success(res);
       }
     },
-    error: function (request, status, error) {
-      console.log(error);
+    error: function (request) {
+      if (error != null) {
+        error(request);
+      } else {
+        setError(request.responseJSON.message);
+      }
     },
   });
 };
 
-const getData = (url, form, callback = null) => {
-  let params = getForm($(form));
-
+const getData = (url, params, success = null, error = null) => {
   $.ajax({
     url: url,
     type: 'GET',
     contentType: 'application/json',
     data: JSON.stringify(params),
     success: function (res) {
-      if (callback != null) {
-        callback(res);
+      if (success != null) {
+        success(res);
       }
     },
-    error: function (request, status, error) {
-      console.log(error);
+    error: function (request) {
+      if (error != null) {
+        error(request);
+      } else {
+        setError(request.responseJSON.message);
+      }
     },
   });
 };

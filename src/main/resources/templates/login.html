@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
   <div layout:fragment="content">
-    <form action="loging" method="post">
+    <form>
       <div class="box">
+        <div th:replace="fragments/errormsg :: errormsg"></div>
         <div class="mb-2">
           <label for="username" class="text-base">id</label>
           <input id="id" name="username" type="text" class="form-input w-medium" />
@@ -76,11 +77,8 @@
             if (res.status == '200') {
               location.href = '/home';
             } else {
-              alert(decodeURI(res.message));
+              setError(decodeURI(res.message));
             }
-          },
-          error: function (request, status, error) {
-            console.log(error);
           },
         });
       });

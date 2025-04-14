@@ -7,19 +7,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import jp.planit.seung.curriculum.handler.LoginFailHandler;
 import jp.planit.seung.curriculum.handler.LoginSuccessHandler;
 import jp.planit.seung.curriculum.provider.LoginProvider;
-import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
 
   @Autowired
@@ -47,7 +42,7 @@ public class SecurityConfig {
         // .httpBasic(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests((auth) -> auth
             .requestMatchers("/css/**", "/js/**", "/img/**", "/lib/**").permitAll()
-            .requestMatchers("/join", "/join/next", "/joinCheck", "/login", "/password/**").permitAll()
+            .requestMatchers("/join", "/join/**", "/login", "/password/**", "/error").permitAll()
             .anyRequest().authenticated())
         .formLogin((formLogin) -> formLogin
             .loginPage("/login")
