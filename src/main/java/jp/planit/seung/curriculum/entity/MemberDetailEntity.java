@@ -1,5 +1,7 @@
 package jp.planit.seung.curriculum.entity;
 
+import java.lang.reflect.Member;
+
 import groovy.transform.builder.Builder;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,10 +16,10 @@ import lombok.NoArgsConstructor;
 @Table(name = "t_member_detail")
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberDetailEntity extends BaseEntity {
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private String member_id;
 
   @Column
@@ -37,4 +39,15 @@ public class MemberDetailEntity extends BaseEntity {
 
   @Column
   private String postcode;
+
+  @Builder
+  public MemberDetailEntity(String email, String name, String gender, String birthday, String phoneNo,
+      String postcode) {
+    this.email = email;
+    this.name = name;
+    this.gender = gender;
+    this.birthday = birthday;
+    this.phone_no = phoneNo;
+    this.postcode = postcode;
+  }
 }

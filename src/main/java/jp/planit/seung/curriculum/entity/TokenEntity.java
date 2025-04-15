@@ -23,13 +23,13 @@ public class TokenEntity implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
-  @Column
+  @Column(columnDefinition = "json", nullable = false)
   private String token;
 
-  @Column
+  @Column(columnDefinition = "datetime")
   private LocalDateTime create_date;
 
-  @Column
+  @Column(columnDefinition = "datetime", nullable = false)
   private LocalDateTime limit_date;
 
   public TokenEntity(String token, LocalDateTime create, LocalDateTime limit) {
@@ -37,5 +37,4 @@ public class TokenEntity implements Serializable {
     this.create_date = create;
     this.limit_date = limit;
   }
-
 }

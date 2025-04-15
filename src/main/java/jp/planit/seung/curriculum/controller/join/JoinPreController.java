@@ -53,10 +53,33 @@ public class JoinPreController {
 
     String token = joinService.getToken(request);
 
+    session.setAttribute("token", token);
+
     BaseResponse res = new BaseResponse();
     res.setHttpStatus(HttpStatus.OK.value());
     res.setUrl("/join/pre/end");
+
     return ResponseEntity.ok(res);
   }
 
+  @GetMapping("/end")
+  public ModelAndView joinPreEnd() {
+    ModelAndView mv = new ModelAndView();
+    mv.setViewName("join_pre_end");
+
+    String token = (String) session.getAttribute("token");
+    session.removeAttribute("token");
+    mv.addObject("token", token);
+
+    return mv;
+  }
+
+  @PostMapping("/end/ok")
+  public ResponseEntity<?> joinPreEndOk() {
+    BaseResponse res = new BaseResponse();
+    res.setHttpStatus(HttpStatus.OK.value());
+    res.setUrl("/login");
+
+    return ResponseEntity.ok(res);
+  }
 }

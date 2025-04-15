@@ -1,6 +1,5 @@
 package jp.planit.seung.curriculum.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,18 +12,15 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import jp.planit.seung.curriculum.handler.LoginFailHandler;
 import jp.planit.seung.curriculum.handler.LoginSuccessHandler;
-import jp.planit.seung.curriculum.provider.LoginProvider;
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-  @Autowired
-  private LoginProvider loginProvider;
-  @Autowired
-  private LoginSuccessHandler successHandler;
-  @Autowired
-  private LoginFailHandler failHandler;
+  private final LoginSuccessHandler successHandler;
+  private final LoginFailHandler failHandler;
 
   @Bean
   public PasswordEncoder passwordEncoder() {
@@ -56,8 +52,8 @@ public class SecurityConfig {
             .permitAll())
         .logout((logoutConfig) -> logoutConfig
             .logoutSuccessUrl("/login")
-            .invalidateHttpSession(true))
-        .authenticationProvider(loginProvider);
+            .invalidateHttpSession(true));
+
     return http.build();
   }
 }

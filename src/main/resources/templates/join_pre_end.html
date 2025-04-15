@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
-  <div layout:fragment="content">
+  <div layout:fragment="content" class="body flex column">
     <div class="mb-3">
       <label class="text-lg label-hd">会員登録（仮）完了</label>
     </div>
-    <div class="label-center mt-3">
-      ご入力いただいたメールアドレスに確認のためのメールを送信しました。<br />メールを開いて記載されているリンクをクリックし入会手続きを行って下さい。
-    </div>
-    <a id="link"></a>
-    <button type="button" id="next">ログイン画面へ</button>
+    <div class="label-center">ご入力いただいたメールアドレスに確認のためのメールを送信しました。<br />メールを開いて記載されているリンクをクリックし入会手続きを行って下さい。</div>
+    <a id="link">会員登録画面に遷移する。</a>
+    <button type="button" id="next" class="mt-5 blue">ログイン画面へ</button>
     <script>
+      $(window).on('load', () => {
+        $('#link').attr('href', '/join/' + '[[${token}]]');
+      });
       // 次へボタンクリックイベント
       $('#next').click(() => {
         postData('/join/pre/end/ok', {}, (res) => {
@@ -22,6 +23,18 @@
     <style>
       .label-center {
         align-items: center;
+      }
+
+      a {
+        display: block;
+        color: black;
+        margin: 50px 0;
+        align-self: center;
+      }
+
+      button {
+        width: 30%;
+        align-self: center;
       }
     </style>
   </div>

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.AccessLevel;
 import lombok.Builder;
 
-@Table(name = "t_member")
+@Table(name = "m_common")
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

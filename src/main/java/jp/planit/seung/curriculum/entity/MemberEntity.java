@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "t_member")
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberEntity extends BaseEntity {
   @Id
@@ -23,5 +22,12 @@ public class MemberEntity extends BaseEntity {
 
   @Column
   private String member_id;
+
+  @Builder
+  public MemberEntity(String id, String password, String memberId) {
+    this.id = id;
+    this.password = password;
+    this.member_id = memberId;
+  }
 
 }

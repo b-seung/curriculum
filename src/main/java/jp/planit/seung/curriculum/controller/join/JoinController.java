@@ -16,14 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import ch.qos.logback.core.model.Model;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jp.planit.seung.curriculum.constants.UrlConst;
 import jp.planit.seung.curriculum.dto.JoinIdCheckRequest;
 import jp.planit.seung.curriculum.dto.JoinRequest;
 import jp.planit.seung.curriculum.dto.base.BaseResponse;
+import jp.planit.seung.curriculum.entity.TokenEntity;
 import jp.planit.seung.curriculum.exception.CustomException;
+import jp.planit.seung.curriculum.mapper.TokenMapper;
 import jp.planit.seung.curriculum.service.JoinService;
 import jp.planit.seung.curriculum.validation.join.JoinValidator;
 import lombok.RequiredArgsConstructor;
@@ -36,18 +37,39 @@ public class JoinController {
   private final HttpSession session;
   private final JoinService joinService;
   private final JoinValidator joinValidator;
+  private final TokenMapper tokenMapper;
 
   @InitBinder("joinRequest")
   protected void initBinder(WebDataBinder binder) {
     binder.addValidators(joinValidator);
   }
 
+  @GetMapping("/error")
+  public ModelAndView joinError() {
+    session.removeAttribute("token");
+
+    ModelAndView mv = new ModelAndView();
+
+    return mv;
+  }
+
   @GetMapping("/{token}")
   public ModelAndView joinIndex(@PathVariable("token") String token) {
+
     ModelAndView mv = new ModelAndView();
+
+    TokenEntity tokenInfo = tokenMapper.searchToken(Map.of("token", token));
+
+    if (tokenInfo == null) {
+      mv.setViewName(UrlConst.JOIN_ERROR);
+      return mv;
+    }
+
     mv.setViewName(UrlConst.JOIN);
 
     JoinRequest joinRequestDto = (JoinRequest) session.getAttribute(UrlConst.JOIN);
+
+    session.setAttribute("token", tokenInfo);
 
     if (joinRequestDto == null) {
       return mv;

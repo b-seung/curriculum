@@ -6,6 +6,7 @@
         <div class="mb-3">
           <label class="text-lg label-hd">会員登録（仮）登録</label>
         </div>
+        <div th:replace="fragments/errormsg :: errormsg"></div>
         <div class="mb-3 flex label-center">
           <label for="email" class="text-base form-label required">メールアドレス</label>
           <input id="email" name="email" type="text" class="form-input w-medium" maxlength="256" />
@@ -44,19 +45,47 @@
       });
 
       // 次へボタンクリックイベント
-      $('#next').click(() => {
+      $('#next').click((e) => {
         const params = getForm($('form'));
 
         postData('/join/pre/ok', params, (res) => {
           location.href = res.url;
         });
       });
+
+      $('#email').focusout((e) => {
+        errorClear();
+
+        if (e.target.value != $('#emailConfirm').val() && $('#emailConfirm').val() != '') {
+          setErrorMsg('emailConfirm', 'メールアドレスと一致しません。');
+        }
+      });
+
+      $('#emailConfirm').keyup((e) => {
+        errorClear();
+
+        if (e.target.value != '' && e.target.value != $('#email').val() && $('#email').val() != '') {
+          setErrorMsg('emailConfirm', 'メールアドレスと一致しません。');
+        }
+      });
+
+      $('#password').focusout((e) => {
+        errorClear();
+
+        if (e.target.value != $('#passwordConfirm').val() && $('#passwordConfirm').val() != '') {
+          setErrorMsg('passwordConfirm', 'パスワードと一致しません。');
+        }
+      });
+
+      $('#passwordConfirm').keyup((e) => {
+        errorClear();
+
+        if (e.target.value != '' && e.target.value != $('#password').val() && $('#password').val() != '') {
+          setErrorMsg('passwordConfirm', 'パスワードと一致しません。');
+        }
+      });
     </script>
     <style>
-      .body {
-        padding: 30px;
-      }
-
       .form-label {
         width: 170px;
         margin-left: 30px;

@@ -10,14 +10,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
+import lombok.Builder;
 import lombok.Getter;
 
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @MappedSuperclass
 public class BaseEntity implements Serializable {
-  @Column
-  private String delete_flg;
+  @Builder.Default
+  private String delete_flg = "0";
 
   @CreatedDate
   @Column(updatable = false)

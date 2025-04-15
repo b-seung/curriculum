@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import jp.planit.seung.curriculum.constants.UrlConst;
 import jp.planit.seung.curriculum.dto.JoinRequest;
 import jp.planit.seung.curriculum.dto.base.BaseResponse;
+import jp.planit.seung.curriculum.entity.TokenEntity;
 import jp.planit.seung.curriculum.service.JoinService;
 import lombok.RequiredArgsConstructor;
 
@@ -50,7 +51,12 @@ public class JoinNextController {
   }
 
   @PostMapping("/ok")
-  public ResponseEntity<?> joinNextOk(@RequestBody JoinRequest request) {
+  public ResponseEntity<?> joinNextOk(@RequestBody JoinRequest request) throws Exception {
+
+    TokenEntity tokenInfo = (TokenEntity) session.getAttribute("token");
+    session.removeAttribute("token");
+
+    joinService.insert(request, tokenInfo);
 
     BaseResponse res = new BaseResponse();
     res.setHttpStatus(HttpStatus.OK.value());

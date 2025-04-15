@@ -5,11 +5,17 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jp.planit.seung.curriculum.constants.Common;
 import jp.planit.seung.curriculum.dto.JoinIdCheckResponse;
@@ -22,6 +28,9 @@ import jp.planit.seung.curriculum.entity.TokenEntity;
 import jp.planit.seung.curriculum.mapper.CommonMapper;
 import jp.planit.seung.curriculum.mapper.MemberDetailMapper;
 import jp.planit.seung.curriculum.mapper.MemberMapper;
+import jp.planit.seung.curriculum.mapper.TokenMapper;
+import jp.planit.seung.curriculum.repository.MemberDetailRepository;
+import jp.planit.seung.curriculum.repository.MemberRepository;
 import jp.planit.seung.curriculum.repository.TokenRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -33,7 +42,10 @@ public class JoinService extends BaseService {
   private final MemberMapper memberMapper;
   private final MemberDetailMapper memberDetailMapper;
   private final PasswordEncoder bCryptPasswordEncoder;
+  private final MemberRepository memberRepository;
+  private final MemberDetailRepository memberDetailRepository;
   private final TokenRepository tokenRepository;
+  private final TokenMapper tokenMapper;
 
   public JoinIdCheckResponse checkId(String id) {
     JoinIdCheckResponse res = new JoinIdCheckResponse();
@@ -51,6 +63,9 @@ public class JoinService extends BaseService {
 
   @Transactional
   public String getToken(JoinPreRequest request) throws JSONException {
+
+    tokenMapper.deleteToken(Map.of("email", request.getEmail()));
+
     UUID uuid4 = UUID.randomUUID();
 
     request = request.encodePw(bCryptPasswordEncoder);
@@ -69,8 +84,28 @@ public class JoinService extends BaseService {
   }
 
   @Transactional
-  public void insert(JoinRequest request) {
+  public void insert(JoinRequest request, TokenEntity tokenInfo) throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    JsonNode token = mapper.readTree(tokenInfo.getToken());
 
+    MemberDetailEntity memberDetail = new MemberDetailEntity(
+        token.get("email").asText(),
+        request.getName(),
+        request.getSeibetsu(),
+        request.getBirthday(),
+        request.getPhoneNo(),
+        request.getPostcode());
+
+    MemberDetailEntity mdEntity = memberDetailRepository.save(memberDetail);
+
+    MemberEntity memberEntity = new MemberEntity(
+        request.getId(),
+        token.get("password").asText(),
+        mdEntity.getMember_id());
+
+    memberRepository.save(memberEntity);
+
+    tokenRepository.deleteById(tokenInfo.getId());
   }
 
   public String getSeibetsu(String seibetsu) throws Exception {

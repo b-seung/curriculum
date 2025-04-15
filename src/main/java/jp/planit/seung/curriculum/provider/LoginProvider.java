@@ -19,14 +19,15 @@ import org.springframework.security.core.AuthenticationException;
 import jp.planit.seung.curriculum.entity.MemberEntity;
 import jp.planit.seung.curriculum.entity.User;
 import jp.planit.seung.curriculum.mapper.MemberMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Component
+@RequiredArgsConstructor
 public class LoginProvider implements AuthenticationProvider {
 
-  @Autowired
-  private MemberMapper memberMapper;
+  private final MemberMapper memberMapper;
+  private final PasswordEncoder passwordEncoder;
 
   @Override
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -47,7 +48,7 @@ public class LoginProvider implements AuthenticationProvider {
       resultObj = userInfo;
     }
 
-    if (!resultPw.equals(userPw)) {
+    if (!passwordEncoder.matches(userPw, resultPw)) {
       throw new BadCredentialsException("");
     }
 
@@ -62,7 +63,7 @@ public class LoginProvider implements AuthenticationProvider {
 
   @Override
   public boolean supports(Class<?> authentication) {
-    return authentication.equals(UsernamePasswordAuthenticationToken.class);
+    return (UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication));
   }
 
 }
