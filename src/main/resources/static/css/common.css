@@ -146,6 +146,19 @@ label {
 .mt-5 {
   margin-top: 50px;
 }
+.mt-7 {
+  margin-top: 70px;
+}
+
+.mtb-auto {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.mlr-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
 
 /* label */
 .label-hd {

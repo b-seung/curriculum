@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import jp.planit.seung.curriculum.dto.JoinRequest;
+import jp.planit.seung.curriculum.dto.join.JoinRequest;
 import jp.planit.seung.curriculum.service.JoinService;
 import lombok.RequiredArgsConstructor;
 

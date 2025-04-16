@@ -16,6 +16,29 @@
     LIMIT 1;
   </select>
   
+  <select id="resetInfo" 
+    parameterType="map" 
+    resultType="jp.planit.seung.curriculum.dto.password.PasswordSelectDto">
+    
+    SELECT
+      t1.id, t2.email
+    FROM
+      t_member t1
+    INNER JOIN
+      t_member_detail t2
+    ON
+      t2.member_id = t1.member_id
+      AND t2.email = #{email}
+      AND t2.birthday = #{birthday}
+      AND t2.delete_flg = '0'
+    WHERE
+      t1.delete_flg = '0'
+      <if test='id != null and id != ""'>
+        AND t1.id = #{id}
+      </if>
+    LIMIT 1;
+  </select>
+  
   <select id="login" 
     parameterType="map" 
     resultType="jp.planit.seung.curriculum.entity.User">

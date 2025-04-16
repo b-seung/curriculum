@@ -5,22 +5,19 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jp.planit.seung.curriculum.constants.Common;
-import jp.planit.seung.curriculum.dto.JoinIdCheckResponse;
-import jp.planit.seung.curriculum.dto.JoinPreRequest;
-import jp.planit.seung.curriculum.dto.JoinRequest;
+import jp.planit.seung.curriculum.dto.join.JoinIdCheckResponse;
+import jp.planit.seung.curriculum.dto.join.JoinPreRequest;
+import jp.planit.seung.curriculum.dto.join.JoinRequest;
 import jp.planit.seung.curriculum.entity.CommonEntity;
 import jp.planit.seung.curriculum.entity.MemberDetailEntity;
 import jp.planit.seung.curriculum.entity.MemberEntity;

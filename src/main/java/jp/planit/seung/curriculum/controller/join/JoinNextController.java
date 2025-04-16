@@ -14,9 +14,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ch.qos.logback.core.model.Model;
 import jakarta.servlet.http.HttpSession;
-import jp.planit.seung.curriculum.constants.UrlConst;
-import jp.planit.seung.curriculum.dto.JoinRequest;
+import jp.planit.seung.curriculum.constants.ScreenIdConst;
 import jp.planit.seung.curriculum.dto.base.BaseResponse;
+import jp.planit.seung.curriculum.dto.join.JoinRequest;
 import jp.planit.seung.curriculum.entity.TokenEntity;
 import jp.planit.seung.curriculum.service.JoinService;
 import lombok.RequiredArgsConstructor;
@@ -31,11 +31,11 @@ public class JoinNextController {
 
   @GetMapping("")
   public ModelAndView joinNextIndex(Model model) throws Exception {
-    JoinRequest joinRequestDto = (JoinRequest) session.getAttribute(UrlConst.JOIN);
-    session.setAttribute(UrlConst.JOIN_NEXT, joinRequestDto);
+    JoinRequest joinRequestDto = (JoinRequest) session.getAttribute(ScreenIdConst.JOIN);
+    session.setAttribute(ScreenIdConst.JOIN_NEXT, joinRequestDto);
 
     ModelAndView mv = new ModelAndView();
-    mv.setViewName(UrlConst.JOIN_NEXT);
+    mv.setViewName(ScreenIdConst.JOIN_FOLDER + ScreenIdConst.JOIN_NEXT);
 
     Map<String, Object> params = new HashMap<>();
     params.put("id", joinRequestDto.getId());
@@ -67,7 +67,7 @@ public class JoinNextController {
 
   @PostMapping("/back")
   public ResponseEntity<?> joinNextBack() {
-    session.removeAttribute(UrlConst.JOIN_NEXT);
+    session.removeAttribute(ScreenIdConst.JOIN_NEXT);
 
     BaseResponse res = new BaseResponse();
     res.setHttpStatus(HttpStatus.OK.value());

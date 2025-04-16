@@ -18,10 +18,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import jp.planit.seung.curriculum.constants.UrlConst;
-import jp.planit.seung.curriculum.dto.JoinIdCheckRequest;
-import jp.planit.seung.curriculum.dto.JoinRequest;
+import jp.planit.seung.curriculum.constants.ScreenIdConst;
 import jp.planit.seung.curriculum.dto.base.BaseResponse;
+import jp.planit.seung.curriculum.dto.join.JoinIdCheckRequest;
+import jp.planit.seung.curriculum.dto.join.JoinRequest;
 import jp.planit.seung.curriculum.entity.TokenEntity;
 import jp.planit.seung.curriculum.exception.CustomException;
 import jp.planit.seung.curriculum.mapper.TokenMapper;
@@ -61,13 +61,13 @@ public class JoinController {
     TokenEntity tokenInfo = tokenMapper.searchToken(Map.of("token", token));
 
     if (tokenInfo == null) {
-      mv.setViewName(UrlConst.JOIN_ERROR);
+      mv.setViewName(ScreenIdConst.JOIN_FOLDER + ScreenIdConst.JOIN_ERROR);
       return mv;
     }
 
-    mv.setViewName(UrlConst.JOIN);
+    mv.setViewName(ScreenIdConst.JOIN_FOLDER + ScreenIdConst.JOIN);
 
-    JoinRequest joinRequestDto = (JoinRequest) session.getAttribute(UrlConst.JOIN);
+    JoinRequest joinRequestDto = (JoinRequest) session.getAttribute(ScreenIdConst.JOIN);
 
     session.setAttribute("token", tokenInfo);
 
@@ -101,7 +101,7 @@ public class JoinController {
       throw new CustomException(joinService.getValidErrorMsg(errors));
     }
 
-    session.setAttribute(UrlConst.JOIN, request);
+    session.setAttribute(ScreenIdConst.JOIN, request);
 
     BaseResponse res = new BaseResponse();
     res.setHttpStatus(HttpStatus.OK.value());
@@ -113,7 +113,7 @@ public class JoinController {
   @PostMapping("/back")
   public ResponseEntity<?> back() {
 
-    session.removeAttribute(UrlConst.JOIN);
+    session.removeAttribute(ScreenIdConst.JOIN);
 
     BaseResponse res = new BaseResponse();
     res.setHttpStatus(HttpStatus.OK.value());

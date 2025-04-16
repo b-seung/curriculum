@@ -1,4 +1,4 @@
-package jp.planit.seung.curriculum.dto;
+package jp.planit.seung.curriculum.dto.join;
 
 import jp.planit.seung.curriculum.dto.base.BaseResponse;
 import lombok.Data;

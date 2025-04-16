@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.servlet.http.HttpSession;
-import jp.planit.seung.curriculum.constants.UrlConst;
+import jp.planit.seung.curriculum.constants.ScreenIdConst;
 import jp.planit.seung.curriculum.dto.base.BaseResponse;
 import jp.planit.seung.curriculum.service.JoinService;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +24,10 @@ public class JoinEndController {
   @RequestMapping("")
   public ModelAndView jojinEndIndex() {
     ModelAndView mv = new ModelAndView();
-    mv.setViewName(UrlConst.JOIN_END);
+    mv.setViewName(ScreenIdConst.JOIN_FOLDER + ScreenIdConst.JOIN_END);
 
-    session.removeAttribute(UrlConst.JOIN);
-    session.removeAttribute(UrlConst.JOIN_NEXT);
+    session.removeAttribute(ScreenIdConst.JOIN);
+    session.removeAttribute(ScreenIdConst.JOIN_NEXT);
 
     return mv;
   }

@@ -2,8 +2,6 @@ package jp.planit.seung.curriculum.handler;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -29,7 +27,6 @@ public class LoginFailHandler extends SimpleUrlAuthenticationFailureHandler {
     ObjectMapper mapper = new ObjectMapper();
 
     BaseErrorResponse responseDataDTO = new BaseErrorResponse();
-    List<String> msg = new ArrayList<>();
 
     String errorMessage = "";
     if (e instanceof BadCredentialsException || e instanceof InternalAuthenticationServiceException) {

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpSession;
-import jp.planit.seung.curriculum.constants.UrlConst;
+import jp.planit.seung.curriculum.constants.ScreenIdConst;
 
 @Controller
 public class LoginController {
@@ -15,6 +15,6 @@ public class LoginController {
   @RequestMapping("/login")
   public String index() {
     session.removeAttribute("token");
-    return UrlConst.LOGIN;
+    return ScreenIdConst.LOGIN;
   }
 }

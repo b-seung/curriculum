@@ -1,7 +1,5 @@
 package jp.planit.seung.curriculum.entity;
 
-import java.lang.reflect.Member;
-
 import groovy.transform.builder.Builder;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

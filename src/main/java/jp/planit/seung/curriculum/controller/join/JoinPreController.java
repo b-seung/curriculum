@@ -15,12 +15,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import jp.planit.seung.curriculum.constants.UrlConst;
-import jp.planit.seung.curriculum.dto.JoinPreRequest;
+import jp.planit.seung.curriculum.constants.ScreenIdConst;
 import jp.planit.seung.curriculum.dto.base.BaseResponse;
+import jp.planit.seung.curriculum.dto.join.JoinPreRequest;
 import jp.planit.seung.curriculum.exception.CustomException;
 import jp.planit.seung.curriculum.service.JoinService;
-import jp.planit.seung.curriculum.validation.join.JoinPreValidator;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -29,18 +28,12 @@ import lombok.RequiredArgsConstructor;
 public class JoinPreController {
 
   private final HttpSession session;
-  private final JoinPreValidator joinPreValidator;
   private final JoinService joinService;
-
-  @InitBinder("joinPreRequest")
-  protected void initBinder(WebDataBinder binder) {
-    binder.addValidators(joinPreValidator);
-  }
 
   @GetMapping("")
   public ModelAndView joinPreIndex() {
     ModelAndView mv = new ModelAndView();
-    mv.setViewName(UrlConst.JOIN_PRE);
+    mv.setViewName(ScreenIdConst.JOIN_PRE_FOLDER + ScreenIdConst.JOIN_PRE);
 
     return mv;
   }
@@ -65,7 +58,7 @@ public class JoinPreController {
   @GetMapping("/end")
   public ModelAndView joinPreEnd() {
     ModelAndView mv = new ModelAndView();
-    mv.setViewName("join_pre_end");
+    mv.setViewName(ScreenIdConst.JOIN_PRE_FOLDER + ScreenIdConst.JOIN_PRE_END);
 
     String token = (String) session.getAttribute("token");
     session.removeAttribute("token");

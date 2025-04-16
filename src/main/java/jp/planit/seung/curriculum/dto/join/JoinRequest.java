@@ -1,4 +1,4 @@
-package jp.planit.seung.curriculum.dto;
+package jp.planit.seung.curriculum.dto.join;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
