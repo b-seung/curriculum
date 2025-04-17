@@ -55,4 +55,15 @@
       t1.id = #{id}
     LIMIT 1;
   </select>
+
+  <update id="resetPassword"
+    parameterType="map">
+
+    UPDATE
+      t_member
+    SET
+      password = #{password}
+    WHERE
+      member_id = #{memberId}
+  </update>
 </mapper>

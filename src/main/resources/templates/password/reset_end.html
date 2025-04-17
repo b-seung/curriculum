@@ -2,21 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
   <div layout:fragment="content" class="body flex column">
     <div class="mb-3">
-      <label class="text-lg label-hd">ID確認</label>
+      <label class="text-lg label-hd">パスワード再設定完了</label>
     </div>
-    <div class="label-center">idを確認して、もう一度ログインしてください。</div>
-    <div class="t-c mt-5">
-      <input id="id" type="text" class="t-c form-input-label w-medium" readonly />
-    </div>
+    <div class="label-center">パスワードの再設定が完了しました。</div>
     <button type="button" id="next" class="mt-7 blue">ログイン画面へ</button>
     <script>
-      $(window).on('load', () => {
-        $('#id').val('[[${id}]]');
-      });
-
-      // 次へボタンクリックイベント
+      // ログイン画面へボタンクリックイベント
       $('#next').click(() => {
-        postData('/join/end/ok', {}, (res) => {
+        postData('/password/end/ok', {}, (res) => {
           if (res.url != '' && res.url != null) {
             location.href = res.url;
           }

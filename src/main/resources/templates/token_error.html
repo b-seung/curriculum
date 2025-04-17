@@ -2,11 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
   <div layout:fragment="content" class="body flex column">
     <div class="label-center">トークンの有効期間が切れました。<br />再発行してください。</div>
-    <button type="button" id="next" class="mt-7 green">会員登録へ</button>
+    <button type="button" id="next" class="mt-7 green">ログイン画面へ</button>
     <script>
       // 次へボタンクリックイベント
       $('#next').click(() => {
-        location.href = '/join/pre';
+        location.href = '/login';
       });
     </script>
     <style>

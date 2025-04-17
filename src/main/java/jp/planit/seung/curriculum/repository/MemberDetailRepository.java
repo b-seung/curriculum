@@ -6,4 +6,5 @@ import jp.planit.seung.curriculum.entity.MemberDetailEntity;
 
 public interface MemberDetailRepository extends JpaRepository<MemberDetailEntity, Integer> {
 
+  MemberDetailEntity findByEmail(String email);
 }

@@ -4,111 +4,36 @@
     <form>
       <div class="body">
         <div class="mb-3">
-          <label class="text-lg label-hd">会員登録</label>
+          <label class="text-lg label-hd">パスワード再設定</label>
         </div>
         <div th:replace="fragments/errormsg :: errormsg"></div>
-        <div class="mb-3 flex row">
-          <label for="id" class="text-base form-label required">id</label>
+        <div class="mb-5 label-center">新しいパスワードを入力してください。</div>
+        <div class="mb-3 flex label-center">
+          <label for="password" class="text-base form-label required">パスワード</label>
+          <input id="password" name="password" type="password" class="form-input w-medium" maxlength="64" />
+        </div>
+        <div class="mb-5 flex label-center">
+          <label for="passwordConfirm" class="text-base form-label">パスワード確認</label>
           <div class="flex column">
-            <div class="flex row label-center">
-              <input id="id" name="id" type="text" class="form-input w-medium-half" maxlength="20" />
-              <button type="button" class="gray check ml-1" id="idCheckBtn">確認する</button>
-              <input id="id_check" name="id_check" type="text" class="hidden" />
-            </div>
-            <p id="error-id" class="error-msg text-sm hidden"></p>
+            <input id="passwordConfirm" type="password" class="form-input w-medium" maxlength="64" />
+            <p id="error-passwordConfirm" class="error-msg text-sm hidden"></p>
           </div>
         </div>
-        <div class="mb-3 flex row label-center">
-          <label for="name" class="text-base form-label">氏名</label>
-          <div class="flex column">
-            <input id="name" name="name" type="text" class="form-input w-medium" maxlength="20" />
-            <p class="comment">※姓と名の間に全角スペースを入れてください</p>
-          </div>
-        </div>
-        <div class="mb-3 flex row label-center">
-          <label for="birthday" class="text-base form-label required">生年月日</label>
-          <div class="flex column">
-            <div class="flex row label-center">
-              <input id="birthday" name="birthday" type="date" class="form-input w-medium-half" />
-
-              <label class="text-sm ml-3">年齢</label>
-              <input id="years" type="number" class="form-input w-short-half" style="margin: 0 5px" readonly />
-              <label class="text-sm">歳</label>
-            </div>
-            <p id="error-birthday" class="error-msg text-sm hidden"></p>
-          </div>
-        </div>
-        <div class="mb-3 flex row label-center">
-          <label class="text-base form-label">性別</label>
-          <div class="flex row">
-            <input id="male" name="seibetsu" type="radio" value="0" />
-            <label for="male" class="text-sm">男性</label>
-          </div>
-          <div class="flex row ml-2">
-            <input id="female" name="seibetsu" type="radio" value="1" />
-            <label for="female" class="text-sm">女性</label>
-          </div>
-        </div>
-        <div class="mb-3 flex row label-center">
-          <label for="postcode" class="text-base form-label">郵便番号</label>
-          <div class="flex column">
-            <input id="postcode" name="postcode" type="number" class="form-input w-short" maxlength="7" />
-            <p class="comment">※ハイフン(-)なしで入力してください。</p>
-          </div>
-        </div>
-        <div class="flex row label-center">
-          <label for="phoneNo" class="text-base form-label">電話番号</label>
-          <div class="flex column">
-            <input id="phoneNo" name="phoneNo" type="number" class="form-input w-medium-half" maxlength="12" />
-            <p class="comment">※ハイフン(-)なしで入力してください。</p>
-          </div>
-        </div>
-        <div class="mt-5 flex row bt-box">
+        <div class="mt-7 flex row bt-box">
           <button id="back" type="button">戻る</button>
-          <button id="clear" type="button" class="green">クリア</button>
           <button id="next" type="button" class="blue">次へ</button>
         </div>
       </div>
     </form>
     <script>
       // 初期処理
-      $(window).on('load', function () {
-        const today = new Date();
-        let year = today.getFullYear().toString().padStart(4, '0');
-        let month = (today.getMonth() + 1).toString().padStart(2, '0');
-        let day = today.getDate().toString().padStart(2, '0');
-
-        if ('[[${birthday}]]' == '') {
-          $('#birthday').val(`${year}-${month}-${day}`);
-          $('#years').val(0);
-        } else {
-          const birthday = new Date('[[${birthday}]]');
-          getYears(today, birthday);
-
-          $('#birthday').val('[[${birthday}]]');
-        }
-
-        $('#id').val('[[${id}]]');
-        $('#name').val('[[${name}]]');
-        $('#seibetsu').val('[[${gender}]]');
-        $('#seibetsuName').val('[[${genderName}]]');
-        $('#postcode').val('[[${postcode}]]');
-        $('#phoneNo').val('[[${phoneNo}]]');
-
-        $('#id_check').val('');
-
-        if ($('#id').val() == '') {
-          $('#idCheckBtn').attr('disabled', true);
-        } else {
-          $('#idCheckBtn').attr('disabled', false);
-        }
-      });
+      $(window).on('load', function () {});
 
       // 戻るボタンクリックイベント
       $('#back').click(() => {
-        postData('/join/back', {}, (res) => {
-          if (res.httpStatus == 200) {
-            window.history.back();
+        postData('/password/back', {}, (res) => {
+          if (res.url != '' && res.url != null) {
+            location.href = res.url;
           }
         });
       });
@@ -117,63 +42,32 @@
       $('#next').click(() => {
         let params = getForm($('form'));
 
-        postData('/join/ok', params, (res) => {
+        postData('/password/ok', params, (res) => {
           if (res.url != '' && res.url != null) {
             location.href = res.url;
           }
         });
       });
 
-      // 確認するボタンクリックイベント
-      $('#idCheckBtn').click(() => {
-        $('#id_check').val('');
-        let params = { id: $('#id').val() };
-        postData('/join/idCheck', params, (res) => {
-          if (res.cnt == '1') {
-            setErrorMsg('id', '既に使用されているidです。');
-            $('#id_check').val('');
-          } else {
-            setSuccessMsg('id', 'ご利用可能なIDです');
-            $('#id_check').val('true');
-          }
-        });
-      });
+      $('#password').focusout((e) => {
+        errorClear();
 
-      // idフォーカスアウト
-      $('#id').focusout((e) => {
-        if (e.target.value == '') {
-          $('#idCheckBtn').attr('disabled', true);
-        } else {
-          $('#idCheckBtn').attr('disabled', false);
+        if (e.target.value != $('#passwordConfirm').val() && $('#passwordConfirm').val() != '') {
+          setErrorMsg('passwordConfirm', 'パスワードと一致しません。');
         }
       });
 
-      // 生年月日フォーカスアウト
-      $('#birthday').focusout((e) => {
-        const today = new Date();
-        const input = new Date(e.target.value);
+      $('#passwordConfirm').keyup((e) => {
+        errorClear();
 
-        errorClearTarget('birthday');
-        if (e.target.value == '') {
-          $('#years').val('');
-        } else {
-          getYears(today, input);
+        if (e.target.value != '' && e.target.value != $('#password').val() && $('#password').val() != '') {
+          setErrorMsg('passwordConfirm', 'パスワードと一致しません。');
         }
       });
-
-      const getYears = (today, birthday) => {
-        if (today.getTime() < birthday.getTime()) {
-          setErrorMsg('birthday', '本日以降の日付を入力しました。');
-          $('#years').val('');
-        } else {
-          const time = today.getTime() - birthday.getTime();
-          $('#years').val(Math.floor(Math.abs(time / (1000 * 60 * 60 * 24 * 365))));
-        }
-      };
     </script>
     <style>
       .form-label {
-        width: 130px;
+        width: 150px;
         margin-left: 30px;
       }
 

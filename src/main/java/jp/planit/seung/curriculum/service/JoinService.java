@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.micrometer.common.util.StringUtils;
 import jp.planit.seung.curriculum.constants.Common;
 import jp.planit.seung.curriculum.dto.join.JoinIdCheckResponse;
 import jp.planit.seung.curriculum.dto.join.JoinPreRequest;
@@ -88,7 +89,7 @@ public class JoinService extends BaseService {
     MemberDetailEntity memberDetail = new MemberDetailEntity(
         token.get("email").asText(),
         request.getName(),
-        request.getSeibetsu(),
+        Integer.parseInt(StringUtils.isEmpty(request.getSeibetsu()) ? "3" : request.getSeibetsu()),
         request.getBirthday(),
         request.getPhoneNo(),
         request.getPostcode());

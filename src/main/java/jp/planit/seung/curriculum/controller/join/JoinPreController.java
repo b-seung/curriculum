@@ -20,6 +20,7 @@ import jp.planit.seung.curriculum.dto.base.BaseResponse;
 import jp.planit.seung.curriculum.dto.join.JoinPreRequest;
 import jp.planit.seung.curriculum.exception.CustomException;
 import jp.planit.seung.curriculum.service.JoinService;
+import jp.planit.seung.curriculum.validation.join.JoinPreValidator;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -29,6 +30,12 @@ public class JoinPreController {
 
   private final HttpSession session;
   private final JoinService joinService;
+  private final JoinPreValidator joinPreValidator;
+
+  @InitBinder("joinPreRequest")
+  protected void initBinder(WebDataBinder binder) {
+    binder.addValidators(joinPreValidator);
+  }
 
   @GetMapping("")
   public ModelAndView joinPreIndex() {

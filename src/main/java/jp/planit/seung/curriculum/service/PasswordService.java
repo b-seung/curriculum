@@ -6,15 +6,26 @@ import java.util.UUID;
 
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.data.domain.Example;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.micrometer.common.util.StringUtils;
 import jp.planit.seung.curriculum.dto.password.PasswordPreRequest;
+import jp.planit.seung.curriculum.dto.password.PasswordRequest;
 import jp.planit.seung.curriculum.dto.password.PasswordSelectDto;
+import jp.planit.seung.curriculum.entity.MemberDetailEntity;
 import jp.planit.seung.curriculum.entity.TokenEntity;
 import jp.planit.seung.curriculum.exception.CustomException;
 import jp.planit.seung.curriculum.mapper.MemberMapper;
 import jp.planit.seung.curriculum.mapper.TokenMapper;
+import jp.planit.seung.curriculum.repository.MemberDetailRepository;
+import jp.planit.seung.curriculum.repository.MemberRepository;
 import jp.planit.seung.curriculum.repository.TokenRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +36,8 @@ public class PasswordService extends BaseService {
   private final MemberMapper memberMapper;
   private final TokenMapper tokenMapper;
   private final TokenRepository tokenRepository;
+  private final MemberDetailRepository memberDetailRepository;
+  private final PasswordEncoder bCryptPasswordEncoder;
 
   public String getTokenOrInfo(PasswordPreRequest request) throws JSONException {
     PasswordSelectDto dto = memberMapper.resetInfo(
@@ -61,5 +74,17 @@ public class PasswordService extends BaseService {
 
       return uuid4.toString();
     }
+  }
+
+  public void resetPassword(PasswordRequest request, TokenEntity entity) throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    JsonNode token = mapper.readTree(entity.getToken());
+
+    request = request.encodePw(bCryptPasswordEncoder);
+    MemberDetailEntity memberInfo = memberDetailRepository.findByEmail(token.get("email").asText());
+
+    memberMapper.resetPassword(Map.of("password", request.getPassword(), "memberId", memberInfo.getMember_id()));
+
+    tokenRepository.delete(entity);
   }
 }

@@ -270,7 +270,7 @@ footer .bottom {
 
 #error-msg {
   padding: 15px 10px;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
   border: 1px solid var(--red);
   border-radius: 10px;
   background-color: var(--red-opacity);

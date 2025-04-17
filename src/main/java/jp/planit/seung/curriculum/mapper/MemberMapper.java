@@ -36,4 +36,6 @@ public interface MemberMapper {
    */
   User login(Map<String, Object> params);
 
+  int resetPassword(Map<String, Object> params);
+
 }

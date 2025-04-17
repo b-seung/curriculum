@@ -44,15 +44,6 @@ public class JoinController {
     binder.addValidators(joinValidator);
   }
 
-  @GetMapping("/error")
-  public ModelAndView joinError() {
-    session.removeAttribute("token");
-
-    ModelAndView mv = new ModelAndView();
-
-    return mv;
-  }
-
   @GetMapping("/{token}")
   public ModelAndView joinIndex(@PathVariable("token") String token) {
 
@@ -61,7 +52,9 @@ public class JoinController {
     TokenEntity tokenInfo = tokenMapper.searchToken(Map.of("token", token));
 
     if (tokenInfo == null) {
-      mv.setViewName(ScreenIdConst.JOIN_FOLDER + ScreenIdConst.JOIN_ERROR);
+      mv.setViewName(ScreenIdConst.TOKEN_ERROR);
+      session.removeAttribute("token");
+
       return mv;
     }
 
@@ -117,6 +110,7 @@ public class JoinController {
 
     BaseResponse res = new BaseResponse();
     res.setHttpStatus(HttpStatus.OK.value());
+    res.setUrl("/login");
     return ResponseEntity.ok(res);
   }
 

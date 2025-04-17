@@ -27,7 +27,7 @@ public class MemberDetailEntity extends BaseEntity {
   private String name;
 
   @Column
-  private String gender;
+  private int gender;
 
   @Column
   private String birthday;
@@ -39,7 +39,7 @@ public class MemberDetailEntity extends BaseEntity {
   private String postcode;
 
   @Builder
-  public MemberDetailEntity(String email, String name, String gender, String birthday, String phoneNo,
+  public MemberDetailEntity(String email, String name, int gender, String birthday, String phoneNo,
       String postcode) {
     this.email = email;
     this.name = name;

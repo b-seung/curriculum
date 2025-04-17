@@ -8,7 +8,7 @@
     DELETE FROM
       token
     WHERE
-      token LIKE CONCAT('%', #{email}, '%');
+      token LIKE CONCAT('%\"', #{email}, '\"%');
   </update>
 
   <select id="searchToken" parameterType="map" resultType="jp.planit.seung.curriculum.entity.TokenEntity">
@@ -17,7 +17,7 @@
     FROM
       token
     WHERE
-      token LIKE CONCAT('%', #{token}, '%')
+      token LIKE CONCAT('%\"', #{token}, '\"%')
       AND limit_date <![CDATA[>=]]> NOW()
     LIMIT 1;
   </select>
