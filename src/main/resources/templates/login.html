@@ -3,7 +3,7 @@
   <div layout:fragment="content">
     <form>
       <div class="box">
-        <div th:replace="fragments/errormsg :: errormsg"></div>
+        <div th:replace="~{fragments/errormsg :: errormsg}"></div>
         <div class="mb-2">
           <label for="username" class="text-base">id</label>
           <input id="id" name="username" type="text" class="form-input w-medium" />

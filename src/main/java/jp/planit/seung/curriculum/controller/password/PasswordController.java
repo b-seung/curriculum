@@ -20,7 +20,6 @@ import jp.planit.seung.curriculum.constants.ScreenIdConst;
 import jp.planit.seung.curriculum.dto.base.BaseResponse;
 import jp.planit.seung.curriculum.dto.password.PasswordRequest;
 import jp.planit.seung.curriculum.entity.TokenEntity;
-import jp.planit.seung.curriculum.mapper.TokenMapper;
 import jp.planit.seung.curriculum.service.PasswordService;
 import lombok.RequiredArgsConstructor;
 
@@ -30,7 +29,6 @@ import lombok.RequiredArgsConstructor;
 public class PasswordController {
 
   private final HttpSession session;
-  private final TokenMapper tokenMapper;
   private final PasswordService service;
 
   @GetMapping("/{token}")
@@ -38,7 +36,7 @@ public class PasswordController {
 
     ModelAndView mv = new ModelAndView();
 
-    TokenEntity tokenInfo = tokenMapper.searchToken(Map.of("token", token));
+    TokenEntity tokenInfo = service.getToken(token);
 
     if (tokenInfo == null) {
       mv.setViewName(ScreenIdConst.TOKEN_ERROR);

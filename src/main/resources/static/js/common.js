@@ -1,3 +1,8 @@
+$(window).on('load', () => {
+  const windowHeight = $(window).height();
+  $('.menu').height(windowHeight - 71);
+});
+
 /**
  * エラーメッセージを表示する
  * @param {*} id
@@ -142,4 +147,29 @@ const getData = (url, params, success = null, error = null) => {
       }
     },
   });
+};
+
+const onClickMenu = () => {
+  const rootStyles = window.getComputedStyle(document.documentElement);
+  if ($('#menu').hasClass('close')) {
+    $('#menu').removeClass('close');
+    $('#menu').addClass('open');
+
+    $('.menu').animate(
+      {
+        left: '0px',
+      },
+      1000
+    );
+  } else {
+    $('#menu').removeClass('open');
+    $('#menu').addClass('close');
+
+    $('.menu').animate(
+      {
+        left: rootStyles.getPropertyValue('--menu-width-default'),
+      },
+      1000
+    );
+  }
 };

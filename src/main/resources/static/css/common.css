@@ -21,6 +21,9 @@
   --gray: #a3a1a1;
   --red: #ff5f2e;
   --red-opacity: #ff5f2e33;
+
+  --menu-width: 300px;
+  --menu-width-default: -300px;
 }
 
 body {
@@ -58,6 +61,10 @@ label {
 }
 
 /* width */
+.w-100 {
+  width: 100px;
+}
+
 .w-short-half {
   width: calc(var(--container-xs) / 2);
 }
@@ -219,10 +226,6 @@ button.gray {
   color: white;
 }
 
-button.check {
-  width: 100px;
-}
-
 button:disabled {
   cursor: default;
   background-color: var(--red-opacity);
@@ -251,21 +254,55 @@ button:disabled {
 header .top {
   border-bottom: 0.5px lightgray solid;
   height: 70px;
-  font-weight: bold;
-  align-content: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 20px;
+}
+
+header .top div {
+  flex-grow: 1;
   text-align: center;
+  font-weight: bolder;
+}
+
+header .top img {
+  height: 30px;
+  cursor: pointer;
+}
+
+header .top button {
+  width: auto;
+  height: fit-content;
+  cursor: pointer;
+  background-color: #00000000;
+  margin: 0;
+  padding: 0;
+  font-weight: 100;
 }
 
 footer {
   width: 100%;
   position: fixed;
   bottom: 0;
+  z-index: 1;
 }
 footer .bottom {
   height: 50px;
   background-color: rgb(235, 235, 235);
   align-content: center;
   text-align: center;
+}
+
+.menu {
+  position: absolute;
+  width: var(--menu-width);
+  z-index: 2;
+
+  border-right: 0.5px lightgray solid;
+  background-color: white;
+
+  left: var(--menu-width-default);
 }
 
 #error-msg {
@@ -279,4 +316,22 @@ footer .bottom {
 
 input[type='radio'] {
   margin: -1px 5px 0 0;
+}
+
+.form-label {
+  width: 170px;
+  margin-left: 30px;
+}
+
+.label-center {
+  align-items: center;
+}
+
+.bt-box {
+  justify-content: space-between;
+}
+
+.bt-box button {
+  max-width: 300px;
+  width: calc(100% / 3 - 10px);
 }

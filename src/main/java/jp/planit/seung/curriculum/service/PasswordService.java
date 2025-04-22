@@ -39,6 +39,12 @@ public class PasswordService extends BaseService {
   private final MemberDetailRepository memberDetailRepository;
   private final PasswordEncoder bCryptPasswordEncoder;
 
+  public TokenEntity getToken(String token) {
+    TokenEntity tokenInfo = tokenMapper.searchToken(Map.of("token", token));
+
+    return tokenInfo;
+  }
+
   public String getTokenOrInfo(PasswordPreRequest request) throws JSONException {
     PasswordSelectDto dto = memberMapper.resetInfo(
         Map.of(

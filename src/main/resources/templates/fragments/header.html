@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
   <header th:fragment="header">
-    <div class="top text-xl">課題</div>
+    <div class="top">
+      <img sec:authorize="isAuthenticated()" class="close" id="menu" onclick="onClickMenu()" src="/img/hamburger.png" />
+      <div class="text-xl">課題</div>
+      <button sec:authorize="isAuthenticated()" onclick="location.href='/logout'">ログアウト</button>
+    </div>
   </header>
+  <script></script>
 </html>

@@ -6,7 +6,7 @@
         <div class="mb-3">
           <label class="text-lg label-hd">パスワード再設定</label>
         </div>
-        <div th:replace="fragments/errormsg :: errormsg"></div>
+        <div th:replace="~{fragments/errormsg :: errormsg}"></div>
         <div class="mb-5 label-center">新しいパスワードを入力してください。</div>
         <div class="mb-3 flex label-center">
           <label for="password" class="text-base form-label required">パスワード</label>
@@ -65,23 +65,5 @@
         }
       });
     </script>
-    <style>
-      .form-label {
-        width: 150px;
-        margin-left: 30px;
-      }
-
-      .label-center {
-        align-items: center;
-      }
-
-      .bt-box {
-        justify-content: space-between;
-      }
-      .bt-box button {
-        max-width: 300px;
-        width: calc(100% / 3 - 10px);
-      }
-    </style>
   </div>
 </html>

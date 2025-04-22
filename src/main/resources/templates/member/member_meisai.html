@@ -4,34 +4,27 @@
     <form>
       <div class="body">
         <div class="mb-3">
-          <label class="text-lg label-hd">会員登録（仮）登録</label>
+          <label class="text-lg label-hd">会員情報</label>
         </div>
         <div th:replace="~{fragments/errormsg :: errormsg}"></div>
-        <div class="mb-3 flex label-center">
-          <label for="email" class="text-base form-label required">メールアドレス</label>
-          <input id="email" name="email" type="text" class="form-input w-medium" maxlength="256" />
-        </div>
-        <div class="mb-4 flex label-center">
-          <label for="emailConfirm" class="text-base form-label">メールアドレス確認</label>
-          <div class="flex column">
-            <input id="emailConfirm" type="text" class="form-input w-medium" maxlength="256" />
-            <p id="error-emailConfirm" class="error-msg text-sm hidden"></p>
+        <div class="mb-3 flex">
+          <div class="flex label-center">
+            <label for="id" class="text-sm search-label">id</label>
+            <input id="id" name="id" type="text" class="form-input w-short" maxlength="256" />
+          </div>
+          <div class="flex label-center">
+            <label for="name" class="text-sm search-label">氏名</label>
+            <input id="name" name="name" type="text" class="form-input w-medium" maxlength="256" />
           </div>
         </div>
-        <div class="mb-3 flex label-center">
-          <label for="password" class="text-base form-label required">パスワード</label>
-          <input id="password" name="password" type="password" class="form-input w-medium" maxlength="64" />
-        </div>
-        <div class="mb-5 flex label-center">
-          <label for="passwordConfirm" class="text-base form-label">パスワード確認</label>
-          <div class="flex column">
-            <input id="passwordConfirm" type="password" class="form-input w-medium" maxlength="64" />
-            <p id="error-passwordConfirm" class="error-msg text-sm hidden"></p>
+        <div class="mb-3 flex">
+          <div>
+            <button class="w-100 blue">新規</button>
+            <button class="w-100 blue">複写</button>
+            <button class="w-100 blue">変更</button>
+            <button class="w-100 blue">削除</button>
           </div>
-        </div>
-        <div class="mt-7 flex row bt-box">
-          <button id="back" type="button">戻る</button>
-          <button id="next" type="button" class="blue">次へ</button>
+          <button class="w-100 blue">検索</button>
         </div>
       </div>
     </form>
@@ -85,5 +78,23 @@
         }
       });
     </script>
+    <style>
+      .search-label {
+        margin-right: 30px;
+      }
+
+      .label-center + .label-center {
+        margin-left: 50px;
+      }
+
+      .bt-box {
+        justify-content: space-between;
+      }
+
+      .bt-box button {
+        max-width: 300px;
+        width: calc(100% / 3 - 10px);
+      }
+    </style>
   </div>
 </html>

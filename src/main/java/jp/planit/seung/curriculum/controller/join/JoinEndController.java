@@ -10,7 +10,6 @@ import org.springframework.web.servlet.ModelAndView;
 import jakarta.servlet.http.HttpSession;
 import jp.planit.seung.curriculum.constants.ScreenIdConst;
 import jp.planit.seung.curriculum.dto.base.BaseResponse;
-import jp.planit.seung.curriculum.service.JoinService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -19,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 public class JoinEndController {
 
   private final HttpSession session;
-  private final JoinService joinService;
 
   @RequestMapping("")
   public ModelAndView jojinEndIndex() {
