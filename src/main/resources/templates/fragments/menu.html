@@ -1,4 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <div class="menu" th:fragment="menu"></div>
+  <div class="menu" th:fragment="menu">
+    <th:block th:each="page, index : ${T(jp.planit.seung.curriculum.dto.MenuStaticValue).menuList}">
+      <a th:href="${page.url}">[[${page.menu_name}]]</a>
+    </th:block>
+  </div>
 </html>

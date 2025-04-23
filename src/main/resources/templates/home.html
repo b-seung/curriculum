@@ -6,11 +6,8 @@
   xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
   <div layout:fragment="content">
-    <b>Authenticated username:</b>
     <div sec:authorize="isAuthenticated()" sec:authentication="name"></div>
     <div sec:authorize="isAuthenticated()" sec:authentication="authorities"></div>
-    <button sec:authorize='${hasRole("MEMBER")}'>dafdsfsad</button>
-    <button sec:authorize="isAnonymous()">btutod</button>
     <div sec:authorize="isAnonymous()" sec:authentication="principal"></div>
   </div>
 </html>

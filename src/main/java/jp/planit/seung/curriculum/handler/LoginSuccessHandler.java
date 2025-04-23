@@ -1,6 +1,7 @@
 package jp.planit.seung.curriculum.handler;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -14,7 +15,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jp.planit.seung.curriculum.constants.SessionConst;
+import jp.planit.seung.curriculum.dto.MenuStaticValue;
 import jp.planit.seung.curriculum.dto.base.BaseResponse;
+import jp.planit.seung.curriculum.entity.MenuEntity;
+import jp.planit.seung.curriculum.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;
 
 @Component

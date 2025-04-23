@@ -305,6 +305,25 @@ footer .bottom {
   left: var(--menu-width-default);
 }
 
+.menu a {
+  display: block;
+  text-decoration: none;
+
+  padding: 10px;
+}
+
+.menu a:link {
+  color: black;
+}
+
+.menu a:visited {
+  color: black;
+}
+
+.menu a + a {
+  border-top: 0.5px solid lightgray;
+}
+
 #error-msg {
   padding: 15px 10px;
   margin-bottom: 30px;
@@ -334,4 +353,37 @@ input[type='radio'] {
 .bt-box button {
   max-width: 300px;
   width: calc(100% / 3 - 10px);
+}
+
+button.search {
+  margin-left: auto;
+}
+
+/* table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+tr {
+  border: 0.5px solid lightgray;
+}
+
+th,
+td {
+  padding: 10px 2px;
+  font-size: var(--text-sm);
+}
+
+th + th,
+td + td {
+  border-left: 0.5px solid lightgray;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #00000007;
+}
+
+.selectRow {
+  background-color: var(--red-opacity) !important;
 }

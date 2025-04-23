@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.micrometer.common.util.StringUtils;
+import jakarta.transaction.Transactional;
 import jp.planit.seung.curriculum.dto.password.PasswordPreRequest;
 import jp.planit.seung.curriculum.dto.password.PasswordRequest;
 import jp.planit.seung.curriculum.dto.password.PasswordSelectDto;
@@ -82,6 +83,7 @@ public class PasswordService extends BaseService {
     }
   }
 
+  @Transactional
   public void resetPassword(PasswordRequest request, TokenEntity entity) throws Exception {
     ObjectMapper mapper = new ObjectMapper();
     JsonNode token = mapper.readTree(entity.getToken());

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
   <div layout:fragment="content">
-    <form>
-      <div class="body">
-        <div class="mb-3">
-          <label class="text-lg label-hd">会員情報</label>
-        </div>
-        <div th:replace="~{fragments/errormsg :: errormsg}"></div>
+    <div class="body">
+      <div class="mb-3">
+        <label class="text-lg label-hd">会員管理</label>
+      </div>
+      <div th:replace="~{fragments/errormsg :: errormsg}"></div>
+      <form>
         <div class="mb-3 flex">
           <div class="flex label-center">
             <label for="id" class="text-sm search-label">id</label>
@@ -16,66 +16,47 @@
             <label for="name" class="text-sm search-label">氏名</label>
             <input id="name" name="name" type="text" class="form-input w-medium" maxlength="256" />
           </div>
+          <button type="button" class="w-100 blue search" id="search">検索</button>
         </div>
-        <div class="mb-3 flex">
-          <div>
-            <button class="w-100 blue">新規</button>
-            <button class="w-100 blue">複写</button>
-            <button class="w-100 blue">変更</button>
-            <button class="w-100 blue">削除</button>
-          </div>
-          <button class="w-100 blue">検索</button>
+      </form>
+      <div class="mb-3 flex">
+        <div id="crudBtn" data-controller="member">
+          <button type="button" class="w-100 gray" id="add">新規</button>
+          <button type="button" class="w-100 gray" id="copy">複写</button>
+          <button type="button" class="w-100 gray" id="update">変更</button>
+          <button type="button" class="w-100 gray" id="delete">削除</button>
         </div>
       </div>
-    </form>
+      <table></table>
+    </div>
     <script>
-      // 初期処理
-      $(document).ready(function () {});
+      const columns = {
+        id: { name: 'ID' },
+        name: { name: '氏名' },
+        email: { name: 'メールアドレス' },
+        gender_name: { name: '性別' },
+        birthday: { name: '生年月日' },
+        postcode: {},
+        phone_no: {},
+        update_date: {},
+      };
 
-      // 戻るボタンクリックイベント
-      $('#back').click(() => {
-        window.history.back();
+      // 初期処理
+      $(document).ready(function () {
+        createTableHeader(columns);
       });
 
       // 次へボタンクリックイベント
-      $('#next').click((e) => {
+      $('#search').click((e) => {
         const params = getForm($('form'));
 
-        postData('/join/pre/ok', params, (res) => {
-          location.href = res.url;
+        postData('/member/search', params, (res) => {
+          if (res.httpStatus == 200) {
+            createTable(columns, res.data);
+          } else {
+            location.href = '/login';
+          }
         });
-      });
-
-      $('#email').focusout((e) => {
-        errorClear();
-
-        if (e.target.value != $('#emailConfirm').val() && $('#emailConfirm').val() != '') {
-          setErrorMsg('emailConfirm', 'メールアドレスと一致しません。');
-        }
-      });
-
-      $('#emailConfirm').keyup((e) => {
-        errorClear();
-
-        if (e.target.value != '' && e.target.value != $('#email').val() && $('#email').val() != '') {
-          setErrorMsg('emailConfirm', 'メールアドレスと一致しません。');
-        }
-      });
-
-      $('#password').focusout((e) => {
-        errorClear();
-
-        if (e.target.value != $('#passwordConfirm').val() && $('#passwordConfirm').val() != '') {
-          setErrorMsg('passwordConfirm', 'パスワードと一致しません。');
-        }
-      });
-
-      $('#passwordConfirm').keyup((e) => {
-        errorClear();
-
-        if (e.target.value != '' && e.target.value != $('#password').val() && $('#password').val() != '') {
-          setErrorMsg('passwordConfirm', 'パスワードと一致しません。');
-        }
       });
     </script>
     <style>

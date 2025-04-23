@@ -1,6 +1,44 @@
 $(window).on('load', () => {
   const windowHeight = $(window).height();
   $('.menu').height(windowHeight - 71);
+
+  if ($('div[id=crudBtn]').length > 0) {
+    const controller = $('div[id=crudBtn]').data('controller');
+
+    $('div[id=crudBtn]')
+      .find('button')
+      .each((index, btn) => {
+        const id = $(btn).attr('id');
+
+        console.log(id);
+
+        $(btn).click(() => {
+          if (id != 'add') {
+            if ($('.selectRow').length == 0) {
+              alert('明細行を選択してください。');
+              return;
+            }
+          }
+
+          let params = {};
+          $('.selectRow')
+            .find('td')
+            .each((index, item) => {
+              const key = $(item).attr('id');
+              const value = $(item).text();
+              params[key] = value;
+            });
+
+          postData(`/${controller}/${id}`, params, (res) => {
+            if (res.httpStatus == 200) {
+              location.href = res.url;
+            } else {
+              location.href = '/error';
+            }
+          });
+        });
+      });
+  }
 });
 
 /**
@@ -171,5 +209,57 @@ const onClickMenu = () => {
       },
       1000
     );
+  }
+};
+
+const createTableHeader = (columns) => {
+  const tHead = document.createElement('thead');
+
+  let headHtml = '<tr>';
+  Object.keys(columns).forEach((element) => {
+    if (columns[element].name == undefined) {
+      headHtml += `<th class="hidden">${columns[element].name}</th>`;
+    } else {
+      headHtml += `<th>${columns[element].name}</th>`;
+    }
+  });
+
+  headHtml += '</tr>';
+  tHead.innerHTML = headHtml;
+  $('table').append(tHead);
+  $('table').append('<tbody></tbody>');
+};
+
+const createTable = (columns, data) => {
+  if (data.length == 0) {
+    $('tbody').html(`<tr><td colspan=${Object.keys(columns).length} class="t-c mb-3">表示するデータが存在しません。</td></tr>`);
+  } else {
+    let table = new Array();
+
+    data.forEach((row, index) => {
+      let rowText = `<tr data-index=${index}>`;
+      Object.keys(columns).forEach((title) => {
+        if (title in row) {
+          if (columns[title].name == undefined) {
+            rowText += `<td id=${title} class="hidden">${row[title]}</td>`;
+          } else {
+            rowText += `<td id=${title}>${row[title]}</td>`;
+          }
+        }
+      });
+      rowText += '</tr>';
+      table.push(rowText);
+    });
+
+    $('tbody').html(table);
+
+    $('tbody')
+      .find('tr')
+      .each((index, row) => {
+        $(row).click((e) => {
+          $('.selectRow').removeClass('selectRow');
+          $(row).addClass('selectRow');
+        });
+      });
   }
 };

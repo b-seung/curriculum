@@ -16,4 +16,37 @@
     LIMIT 1;
   </select>
   
+  <select id="search"
+    parameterType="map"
+    resultType="jp.planit.seung.curriculum.dto.member.MemberInfo">
+
+    SELECT
+      t1.id
+      , t2.*
+      , m.word as gender_name
+    FROM
+      t_member t1
+    INNER JOIN
+      t_member_detail t2
+    ON
+      t2.member_id = t1.member_id
+      AND t2.delete_flg = 0
+    LEFT JOIN
+      m_common m
+    ON
+      m.id = t2.gender
+      AND m.group_id = 1
+      AND m.delete_flg = 0
+    WHERE
+      t1.delete_flg = 0
+
+      <if test='id != null and id != ""'>
+        AND t1.id = ${id}
+      </if>
+
+      <if test='name != null and name != ""'>
+        AND t2.name LIKE CONCAT('%', #{name}, '%');
+      </if>
+    ;
+  </select>
 </mapper>

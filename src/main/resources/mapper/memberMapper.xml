@@ -63,6 +63,7 @@
       t_member
     SET
       password = #{password}
+      , update_date = NOW()
     WHERE
       member_id = #{memberId}
   </update>
