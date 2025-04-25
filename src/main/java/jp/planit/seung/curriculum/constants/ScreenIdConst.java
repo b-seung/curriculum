@@ -10,8 +10,8 @@ public final class ScreenIdConst {
   public static final String JOIN_PRE_END = "join_pre_end";
 
   public static final String JOIN_FOLDER = "join/";
-  public static final String JOIN = "join_sample";
-  public static final String JOIN_NEXT = "join_next_sample";
+  public static final String JOIN = "join";
+  public static final String JOIN_NEXT = "join_next";
   public static final String JOIN_END = "join_end";
 
   public static final String PASSWORD_PRE_FOLDER = "passwordPre/";
