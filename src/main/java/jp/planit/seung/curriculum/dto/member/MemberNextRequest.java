@@ -1,9 +1,11 @@
 package jp.planit.seung.curriculum.dto.member;
 
+import groovy.transform.EqualsAndHashCode;
 import lombok.Data;
 
 @Data
-public class MemberInfo {
+@EqualsAndHashCode(callSuper = false)
+public class MemberNextRequest {
   private String id;
   private String member_id;
   private String name;

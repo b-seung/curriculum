@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import io.micrometer.common.util.StringUtils;
 import jp.planit.seung.curriculum.dto.join.JoinRequest;
 import jp.planit.seung.curriculum.service.JoinService;
 import lombok.RequiredArgsConstructor;
@@ -26,11 +27,12 @@ public class JoinValidator implements Validator {
     JoinRequest request = (JoinRequest) target;
 
     // 生年月日チェック
-    LocalDate today = LocalDate.now();
-    LocalDate birthday = LocalDate.parse(request.getBirthday());
-    if (joinService.isAfterDate(today, birthday)) {
-      errors.rejectValue("birthday", null, "生年月日は本日よりも前の日付にしてください。");
+    if (!StringUtils.isEmpty(request.getBirthday())) {
+      LocalDate today = LocalDate.now();
+      LocalDate birthday = LocalDate.parse(request.getBirthday());
+      if (joinService.isAfterDate(today, birthday)) {
+        errors.rejectValue("birthday", null, "生年月日は本日よりも前の日付にしてください。");
+      }
     }
   }
-
 }

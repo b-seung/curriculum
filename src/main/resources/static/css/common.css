@@ -387,3 +387,26 @@ tbody tr:nth-child(even) {
 .selectRow {
   background-color: var(--red-opacity) !important;
 }
+
+/* password */
+.open::after,
+.close::after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: inline-block;
+  cursor: pointer;
+  margin-left: -30px;
+  margin-top: 5px;
+  opacity: 0.5;
+}
+.open::after {
+  background-image: url('../img/eye-open.png');
+}
+.close::after {
+  background-image: url('../img/eye-close.png');
+}

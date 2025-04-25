@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
+  <div layout:fragment="content">
+    <form>
+      <div class="body"></div>
+    </form>
+    <script>
+      // 初期処理
+      $(window).on('load', function () {
+        $('#id').val('[[${id}]]');
+        $('#name').val('[[${name}]]');
+        $('#birthday').val('[[${birthday}]]');
+        $('#seibetsu').val('[[${gender}]]');
+        $('#seibetsuName').val('[[${genderName}]]');
+        $('#postcode').val('[[${postcode}]]');
+        $('#phoneNo').val('[[${phoneNo}]]');
+      });
+
+      // 戻るボタンクリックイベント
+      $('#back').click(() => {
+        postData('/join/next/back', {}, (res) => {
+          if (res.httpStatus == 200) {
+            window.history.back();
+          }
+        });
+      });
+
+      // 次へボタンクリックイベント
+      $('#next').click(() => {
+        let params = getForm($('form'));
+
+        postData('/join/next/ok', params, (res) => {
+          if (res.url != '' && res.url != null) {
+            location.href = res.url;
+          }
+        });
+      });
+    </script>
+  </div>
+</html>

@@ -3,7 +3,7 @@
   <div layout:fragment="content">
     <div class="body">
       <div class="mb-3">
-        <label class="text-lg label-hd">会員管理</label>
+        <label class="text-lg label-hd" id="title">会員管理</label>
       </div>
       <div th:replace="~{fragments/errormsg :: errormsg}"></div>
       <form>
@@ -36,6 +36,8 @@
         email: { name: 'メールアドレス' },
         gender_name: { name: '性別' },
         birthday: { name: '生年月日' },
+        member_id: {},
+        gender: {},
         postcode: {},
         phone_no: {},
         update_date: {},
@@ -66,15 +68,6 @@
 
       .label-center + .label-center {
         margin-left: 50px;
-      }
-
-      .bt-box {
-        justify-content: space-between;
-      }
-
-      .bt-box button {
-        max-width: 300px;
-        width: calc(100% / 3 - 10px);
       }
     </style>
   </div>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
+  <div layout:fragment="content">
+    <div class="body">
+      <div class="mb-3">
+        <label class="text-lg label-hd" id="title">会員編集</label>
+      </div>
+      <div th:replace="~{fragments/errormsg :: errormsg}"></div>
+      <form>
+        <div class="mb-3 flex row label-center">
+          <label for="id" class="text-base form-label required">id</label>
+          <input id="id" name="id" type="text" class="form-input w-medium-half" maxlength="20" />
+        </div>
+        <div class="mb-3 flex row label-center">
+          <label for="password" id="lbl-password" class="text-base form-label">パスワード</label>
+          <div class="eye close">
+            <input id="password" name="password" type="password" class="form-input w-medium" maxlength="256" />
+          </div>
+        </div>
+        <div class="mb-3 flex row label-center">
+          <label for="email" class="text-base form-label required">メールアドレス</label>
+          <input id="email" name="email" type="text" class="form-input w-medium" maxlength="256" />
+        </div>
+        <div class="mb-3 flex row label-center">
+          <label for="name" class="text-base form-label">氏名</label>
+          <div class="flex column">
+            <input id="name" name="name" type="text" class="form-input w-medium" maxlength="20" />
+            <p class="comment">※姓と名の間に全角スペースを入れてください</p>
+          </div>
+        </div>
+        <div class="mb-3 flex row label-center">
+          <label for="birthday" class="text-base form-label required">生年月日</label>
+          <input id="birthday" name="birthday" type="date" class="form-input w-medium-half" />
+        </div>
+        <div class="mb-3 flex row label-center">
+          <label class="text-base form-label">性別</label>
+          <div class="flex row">
+            <input id="male" name="gender" type="radio" value="0" />
+            <label for="male" class="text-sm">男性</label>
+          </div>
+          <div class="flex row ml-2">
+            <input id="female" name="gender" type="radio" value="1" />
+            <label for="female" class="text-sm">女性</label>
+          </div>
+        </div>
+        <div class="mb-3 flex row label-center">
+          <label for="postcode" class="text-base form-label">郵便番号</label>
+          <div class="flex column">
+            <input id="postcode" name="postcode" type="number" class="form-input w-short" maxlength="7" />
+            <p class="comment">※ハイフン(-)なしで入力してください。</p>
+          </div>
+        </div>
+        <div class="flex row label-center">
+          <label for="phone_no" class="text-base form-label">電話番号</label>
+          <div class="flex column">
+            <input id="phone_no" name="phone_no" type="number" class="form-input w-medium-half" maxlength="12" />
+            <p class="comment">※ハイフン(-)なしで入力してください。</p>
+          </div>
+        </div>
+        <input id="member_id" name="member_id" type="text" class="hidden" />
+        <input id="update_date" name="update_date" type="text" class="hidden" />
+      </form>
+      <div class="mt-7 flex row bt-box">
+        <button id="back" type="button">戻る</button>
+        <button id="next" type="button" class="blue">次へ</button>
+      </div>
+    </div>
+    <script>
+      // 初期処理
+      $(window).on('load', () => {
+        const mode = '[[${mode}]]';
+
+        modeSet(mode);
+
+        if (mode != 'copy') {
+          $('#id').val('[[${member.id}]]');
+          $('#email').val('[[${member.email}]]');
+        }
+
+        if (mode == 'add' || mode == 'copy') {
+          $('#lbl-password').addClass('required');
+        }
+
+        $('#name').val('[[${member.name}]]');
+        $('#birthday').val('[[${member.birthday}]]');
+        $(`input:radio[name='gender']:radio[value='${'[[${member.gender}]]'}']`).prop('checked', true);
+        $('#postcode').val('[[${member.postcode}]]');
+        $('#phone_no').val('[[${member.phone_no}]]');
+
+        $('#member_id').val('[[${member.member_id}]]');
+        $('#update_date').val('[[${member.update_date}]]');
+
+        if (mode != 'add' && mode != 'copy') {
+          $('#id').attr('disabled', true);
+          $('#password').attr('disabled', true);
+          $('#email').attr('disabled', true);
+
+          if (mode == 'delete') {
+            $('#name').attr('disabled', true);
+            $('#birthday').attr('disabled', true);
+            $('#gender').attr('disabled', true);
+            $('#postcode').attr('disabled', true);
+            $('#phone_no').attr('disabled', true);
+          }
+        }
+      });
+
+      $('#back').click(() => {
+        postData('/member/edit/back', {}, (res) => {
+          if (res.httpStatus == 200) {
+            location.href = res.url;
+          } else {
+            location.href = '/login';
+          }
+        });
+      });
+
+      // 次へボタンクリックイベント
+      $('#next').click((e) => {
+        const mode = $('#next').data('mode');
+        const params = getForm($('form'));
+        switch (mode) {
+          case 'add':
+          case 'copy':
+            postData('/member/edit/insert', { ...params, mode: mode }, (res) => {
+              if (res.httpStatus == 200) {
+                if (!alert('登録しました。')) {
+                  location.href = res.url;
+                }
+              } else {
+                location.href = '/login';
+              }
+            });
+            break;
+          case 'update':
+            putData(`/member/edit/update`, { ...params, mode: mode }, (res) => {
+              if (res.httpStatus == 200) {
+                if (!alert('更新しました。')) {
+                  location.href = res.url;
+                }
+              } else {
+                location.href = '/login';
+              }
+            });
+            break;
+          case 'delete':
+            deleteData(`/member/edit/delete/${params['id']}`, { ...params, mode: mode }, (res) => {
+              if (res.httpStatus == 200) {
+                if (!alert('削除しました。')) {
+                  location.href = res.url;
+                }
+              } else {
+                location.href = '/login';
+              }
+            });
+            break;
+        }
+      });
+    </script>
+    <style>
+      .search-label {
+        margin-right: 30px;
+      }
+    </style>
+  </div>
+</html>

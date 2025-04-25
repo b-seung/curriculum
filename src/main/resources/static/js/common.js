@@ -10,8 +10,6 @@ $(window).on('load', () => {
       .each((index, btn) => {
         const id = $(btn).attr('id');
 
-        console.log(id);
-
         $(btn).click(() => {
           if (id != 'add') {
             if ($('.selectRow').length == 0) {
@@ -39,6 +37,22 @@ $(window).on('load', () => {
         });
       });
   }
+
+  $('.eye').click((e) => {
+    if (!$(e.target).hasClass('eye')) {
+      return;
+    }
+
+    $('.eye').toggleClass('close');
+
+    if ($('.eye').hasClass('close')) {
+      $('.eye').removeClass('open');
+      $('#password').attr('type', 'password');
+    } else {
+      $('.eye').addClass('open');
+      $('#password').attr('type', 'text');
+    }
+  });
 });
 
 /**
@@ -160,7 +174,11 @@ const postData = (url, params, success = null, error = null) => {
       if (error != null) {
         error(request);
       } else {
-        setError(request.responseJSON.message);
+        if (request.status == 500) {
+          location.href = '/error';
+        } else {
+          setError(request.responseJSON.message);
+        }
       }
     },
   });
@@ -181,7 +199,61 @@ const getData = (url, params, success = null, error = null) => {
       if (error != null) {
         error(request);
       } else {
-        setError(request.responseJSON.message);
+        if (request.status == 500) {
+          location.href = '/error';
+        } else {
+          setError(request.responseJSON.message);
+        }
+      }
+    },
+  });
+};
+
+const putData = (url, params, success = null, error = null) => {
+  $.ajax({
+    url: url,
+    type: 'PUT',
+    contentType: 'application/json',
+    data: JSON.stringify(params),
+    success: function (res) {
+      if (success != null) {
+        success(res);
+      }
+    },
+    error: function (request) {
+      if (error != null) {
+        error(request);
+      } else {
+        if (request.status == 500) {
+          location.href = '/error';
+        } else {
+          setError(request.responseJSON.message);
+        }
+      }
+    },
+  });
+};
+
+const deleteData = (url, params, success = null, error = null) => {
+  $.ajax({
+    url: url,
+    type: 'DELETE',
+    contentType: 'application/json',
+    data: JSON.stringify(params),
+    success: function (res) {
+      if (success != null) {
+        success(res);
+      }
+    },
+    error: function (request) {
+      if (error != null) {
+        error(request);
+      } else {
+        if (request.status == 500) {
+          location.href = '/error';
+        } else {
+          setError(request.responseJSON.message);
+        }
       }
     },
   });
@@ -262,4 +334,25 @@ const createTable = (columns, data) => {
         });
       });
   }
+};
+
+const modeSet = (mode) => {
+  let modeName = '';
+
+  switch (mode) {
+    case 'add':
+    case 'copy':
+      modeName = '登録';
+      break;
+    case 'update':
+      modeName = '更新';
+      break;
+    case 'delete':
+      modeName = '削除';
+      break;
+  }
+
+  $('#title').text(`会員編集（${modeName}）`);
+  $('#next').text(modeName);
+  $('#next').data('mode', mode);
 };

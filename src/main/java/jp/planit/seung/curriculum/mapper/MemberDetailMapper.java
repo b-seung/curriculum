@@ -25,4 +25,12 @@ public interface MemberDetailMapper {
    * @return
    */
   List<MemberInfo> search(Map<String, Object> params);
+
+  /**
+   * 
+   * @param params
+   * @return
+   */
+  void insert(MemberDetailEntity params);
+
 }

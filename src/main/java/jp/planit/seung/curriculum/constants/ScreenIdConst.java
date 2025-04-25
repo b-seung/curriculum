@@ -23,4 +23,8 @@ public final class ScreenIdConst {
   public static final String PASSWORD = "reset";
   public static final String PASSWORD_END = "reset_end";
 
+  public static final String MEMBER_FOLDER = "member/";
+  public static final String MEMBER = "member_kanri";
+  public static final String MEMBER_EDIT = "member_edit";
+
 }

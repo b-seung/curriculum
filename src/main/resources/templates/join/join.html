@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
+  <div layout:fragment="content">
+    <form>
+      <div class="body"></div>
+    </form>
+    <script>
+      // 初期処理
+      $(window).on('load', function () {
+        const today = new Date();
+        let year = today.getFullYear().toString().padStart(4, '0');
+        let month = (today.getMonth() + 1).toString().padStart(2, '0');
+        let day = today.getDate().toString().padStart(2, '0');
+
+        if ('[[${birthday}]]' == '') {
+          $('#birthday').val(`${year}-${month}-${day}`);
+          $('#years').val(0);
+        } else {
+          const birthday = new Date('[[${birthday}]]');
+          getYears(today, birthday);
+
+          $('#birthday').val('[[${birthday}]]');
+        }
+
+        $('#id').val('[[${id}]]');
+        $('#name').val('[[${name}]]');
+        $('#seibetsu').val('[[${gender}]]');
+        $('#seibetsuName').val('[[${genderName}]]');
+        $('#postcode').val('[[${postcode}]]');
+        $('#phoneNo').val('[[${phoneNo}]]');
+
+        $('#id_check').val('');
+
+        if ($('#id').val() == '') {
+          $('#idCheckBtn').attr('disabled', true);
+        } else {
+          $('#idCheckBtn').attr('disabled', false);
+        }
+      });
+
+      // 戻るボタンクリックイベント
+      $('#back').click(() => {
+        postData('/join/back', {}, (res) => {
+          if (res.httpStatus == 200) {
+            window.history.back();
+          }
+        });
+      });
+
+      // 次へボタンクリックイベント
+      $('#next').click(() => {
+        let params = getForm($('form'));
+
+        postData('/join/ok', params, (res) => {
+          if (res.url != '' && res.url != null) {
+            location.href = res.url;
+          }
+        });
+      });
+
+      // 確認するボタンクリックイベント
+      $('#idCheckBtn').click(() => {
+        $('#id_check').val('');
+        let params = { id: $('#id').val() };
+        postData('/join/idCheck', params, (res) => {
+          if (res.cnt == '1') {
+            setErrorMsg('id', '既に使用されているidです。');
+            $('#id_check').val('');
+          } else {
+            setSuccessMsg('id', 'ご利用可能なIDです');
+            $('#id_check').val('true');
+          }
+        });
+      });
+
+      // idフォーカスアウト
+      $('#id').focusout((e) => {
+        if (e.target.value == '') {
+          $('#idCheckBtn').attr('disabled', true);
+        } else {
+          $('#idCheckBtn').attr('disabled', false);
+        }
+      });
+
+      // 生年月日フォーカスアウト
+      $('#birthday').focusout((e) => {
+        const today = new Date();
+        const input = new Date(e.target.value);
+
+        errorClearTarget('birthday');
+        if (e.target.value == '') {
+          $('#years').val('');
+        } else {
+          getYears(today, input);
+        }
+      });
+
+      const getYears = (today, birthday) => {};
+    </script>
+  </div>
+</html>

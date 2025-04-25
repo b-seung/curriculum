@@ -2,6 +2,7 @@ package jp.planit.seung.curriculum.service;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.boot.configurationprocessor.json.JSONException;
@@ -89,7 +90,14 @@ public class PasswordService extends BaseService {
     JsonNode token = mapper.readTree(entity.getToken());
 
     request = request.encodePw(bCryptPasswordEncoder);
-    MemberDetailEntity memberInfo = memberDetailRepository.findByEmail(token.get("email").asText());
+    Optional<MemberDetailEntity> mdEntity = memberDetailRepository.findByEmail(token.get("email").asText());
+    MemberDetailEntity memberInfo = null;
+
+    if (!mdEntity.isPresent()) {
+      throw new Exception("");
+    } else {
+      memberInfo = mdEntity.get();
+    }
 
     memberMapper.resetPassword(Map.of("password", request.getPassword(), "memberId", memberInfo.getMember_id()));
 

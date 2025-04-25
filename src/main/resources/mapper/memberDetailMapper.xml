@@ -49,4 +49,30 @@
       </if>
     ;
   </select>
+  <insert id="insert" parameterType="jp.planit.seung.curriculum.entity.MemberDetailEntity"
+   useGeneratedKeys="true" keyProperty="member_id">
+    INSERT INTO
+      t_member_detail (
+        email
+        , name
+        , birthday
+        , gender
+        , phone_no
+        , postcode
+        , delete_flg
+        , create_date
+        , update_date
+      )
+    VALUES (
+      #{email}
+      , #{name}
+      , #{birthday}
+      , #{gender}
+      , #{phone_no}
+      , #{postcode}
+      , 0
+      , NOW()
+      , NOW()
+    );
+  </insert>
 </mapper>
