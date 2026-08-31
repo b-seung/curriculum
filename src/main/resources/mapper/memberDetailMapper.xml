@@ -41,7 +41,7 @@
       t1.delete_flg = 0
 
       <if test='id != null and id != ""'>
-        AND t1.id = ${id}
+        AND t1.id = #{id}
       </if>
 
       <if test='name != null and name != ""'>
